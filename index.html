@@ -1,0 +1,3198 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>TourBus Pro — ระบบจองรถทัวร์</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================
+   ROOT VARIABLES
+========================================= */
+:root {
+  --primary: #1a56db;
+  --primary-dark: #1341a8;
+  --primary-light: #ebf1ff;
+  --primary-mid: #3b6fe8;
+  --accent: #f0a500;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --danger: #dc2626;
+  --danger-light: #fee2e2;
+  --warning: #d97706;
+  --warning-light: #fef3c7;
+  --white: #ffffff;
+  --gray-50: #f8fafc;
+  --gray-100: #f1f5f9;
+  --gray-200: #e2e8f0;
+  --gray-300: #cbd5e1;
+  --gray-400: #94a3b8;
+  --gray-500: #64748b;
+  --gray-600: #475569;
+  --gray-700: #334155;
+  --gray-800: #1e293b;
+  --gray-900: #0f172a;
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --shadow: 0 4px 20px rgba(26,86,219,0.10);
+  --shadow-md: 0 8px 32px rgba(26,86,219,0.14);
+  --shadow-lg: 0 16px 48px rgba(26,86,219,0.18);
+}
+
+/* =========================================
+RESET & BASE
+========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body {
+font-family: ‘Sarabun’, sans-serif;
+background: var(–gray-50);
+color: var(–gray-800);
+min-height: 100vh;
+-webkit-font-smoothing: antialiased;
+}
+button { cursor: pointer; font-family: inherit; border: none; outline: none; }
+input, select, textarea { font-family: inherit; outline: none; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; }
+
+/* =========================================
+SCROLLBAR
+========================================= */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(–gray-100); }
+::-webkit-scrollbar-thumb { background: var(–gray-300); border-radius: 3px; }
+
+/* =========================================
+NAVIGATION
+========================================= */
+#nav {
+position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+background: var(–white);
+border-bottom: 1px solid var(–gray-200);
+box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+height: 60px;
+display: flex; align-items: center;
+padding: 0 20px;
+gap: 12px;
+}
+
+.nav-logo {
+font-family: ‘Kanit’, sans-serif;
+font-size: 18px; font-weight: 800;
+color: var(–primary);
+display: flex; align-items: center; gap: 8px;
+flex-shrink: 0;
+}
+
+.nav-logo-icon {
+width: 34px; height: 34px;
+background: linear-gradient(135deg, var(–primary), var(–primary-mid));
+border-radius: 10px;
+display: flex; align-items: center; justify-content: center;
+font-size: 18px; color: white;
+}
+
+.nav-links {
+display: flex; gap: 4px; margin-left: auto; align-items: center;
+}
+
+.nav-link {
+padding: 7px 12px; border-radius: var(–radius-sm);
+font-size: 13px; font-weight: 600;
+color: var(–gray-600);
+background: transparent;
+transition: all 0.2s;
+white-space: nowrap;
+}
+
+.nav-link:hover, .nav-link.active {
+background: var(–primary-light);
+color: var(–primary);
+}
+
+.nav-link.admin-btn {
+background: var(–gray-800);
+color: white;
+margin-left: 4px;
+}
+
+.nav-link.admin-btn:hover { background: var(–gray-900); }
+
+/* Mobile nav toggle */
+.nav-toggle {
+display: none;
+background: none;
+font-size: 22px;
+color: var(–gray-700);
+margin-left: auto;
+}
+
+/* =========================================
+PAGES
+========================================= */
+.page { display: none; padding-top: 60px; min-height: 100vh; }
+.page.active { display: block; }
+
+/* =========================================
+HOMEPAGE
+========================================= */
+.hero {
+background: linear-gradient(135deg, var(–primary-dark) 0%, var(–primary) 60%, var(–primary-mid) 100%);
+padding: 40px 20px 50px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+
+.hero::before {
+content: ‘’;
+position: absolute; inset: 0;
+background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,255,255,0.06) 0%, transparent 70%);
+}
+
+.hero h1 {
+font-family: ‘Kanit’, sans-serif;
+font-size: clamp(24px, 5vw, 40px);
+font-weight: 800; color: white;
+position: relative; margin-bottom: 8px;
+}
+
+.hero p {
+font-size: 15px; color: rgba(255,255,255,0.8);
+position: relative; margin-bottom: 28px;
+}
+
+.hero-search {
+display: flex; gap: 8px; justify-content: center;
+flex-wrap: wrap; position: relative;
+max-width: 500px; margin: 0 auto;
+}
+
+.hero-search input, .hero-search select {
+flex: 1; min-width: 140px;
+padding: 12px 16px;
+border-radius: var(–radius-sm);
+border: none;
+font-size: 14px; font-family: ‘Sarabun’, sans-serif;
+background: white;
+color: var(–gray-800);
+}
+
+.hero-search button {
+background: var(–accent);
+color: white; padding: 12px 24px;
+border-radius: var(–radius-sm);
+font-size: 14px; font-weight: 700;
+font-family: ‘Kanit’, sans-serif;
+transition: all 0.2s;
+white-space: nowrap;
+}
+
+.hero-search button:hover { background: #d4900a; transform: translateY(-1px); }
+
+/* Trip cards section */
+.section { padding: 24px 16px; max-width: 800px; margin: 0 auto; }
+
+.section-header {
+display: flex; justify-content: space-between; align-items: center;
+margin-bottom: 16px;
+}
+
+.section-title {
+font-family: ‘Kanit’, sans-serif;
+font-size: 20px; font-weight: 700; color: var(–gray-800);
+}
+
+.trip-count {
+font-size: 13px; color: var(–gray-500);
+background: var(–gray-100);
+padding: 4px 10px; border-radius: 20px;
+}
+
+/* Trip Card */
+.trip-card {
+background: white;
+border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 18px;
+margin-bottom: 12px;
+box-shadow: var(–shadow);
+transition: all 0.25s;
+animation: slideUp 0.3s ease both;
+}
+
+@keyframes slideUp {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.trip-card:hover {
+border-color: var(–primary);
+box-shadow: var(–shadow-md);
+transform: translateY(-2px);
+}
+
+.trip-card-header {
+display: flex; justify-content: space-between; align-items: flex-start;
+margin-bottom: 12px; gap: 12px;
+}
+
+.trip-name {
+font-family: ‘Kanit’, sans-serif;
+font-size: 17px; font-weight: 700; color: var(–gray-900);
+line-height: 1.3;
+}
+
+.trip-price-tag {
+background: linear-gradient(135deg, var(–primary), var(–primary-mid));
+color: white;
+padding: 6px 14px; border-radius: 20px;
+font-family: ‘Kanit’, sans-serif;
+font-size: 15px; font-weight: 700;
+white-space: nowrap; flex-shrink: 0;
+}
+
+.trip-route {
+display: flex; align-items: center; gap: 8px;
+margin-bottom: 12px;
+padding: 10px 14px;
+background: var(–gray-50);
+border-radius: var(–radius-sm);
+}
+
+.trip-route-city {
+font-size: 15px; font-weight: 600; color: var(–gray-800);
+}
+
+.trip-route-arrow {
+color: var(–primary); font-size: 18px;
+flex-shrink: 0;
+}
+
+.trip-meta {
+display: flex; gap: 12px; flex-wrap: wrap;
+margin-bottom: 14px;
+}
+
+.trip-meta-item {
+display: flex; align-items: center; gap: 5px;
+font-size: 13px; color: var(–gray-600);
+}
+
+.trip-meta-item .icon { font-size: 14px; }
+
+.seats-badge {
+display: inline-flex; align-items: center; gap: 4px;
+padding: 3px 10px; border-radius: 20px;
+font-size: 12px; font-weight: 700;
+}
+
+.seats-badge.good { background: var(–success-light); color: var(–success); }
+.seats-badge.low { background: var(–warning-light); color: var(–warning); }
+.seats-badge.full { background: var(–danger-light); color: var(–danger); }
+
+.trip-card-footer {
+display: flex; gap: 8px;
+}
+
+.btn {
+display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+padding: 11px 18px; border-radius: var(–radius-sm);
+font-size: 14px; font-weight: 700;
+font-family: ‘Kanit’, sans-serif;
+transition: all 0.2s;
+border: none; cursor: pointer;
+}
+
+.btn-primary {
+background: linear-gradient(135deg, var(–primary), var(–primary-mid));
+color: white; flex: 1;
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(26,86,219,0.35); }
+
+.btn-outline {
+background: white;
+border: 2px solid var(–primary);
+color: var(–primary);
+}
+.btn-outline:hover { background: var(–primary-light); }
+
+.btn-success {
+background: linear-gradient(135deg, var(–success), #1d8a56);
+color: white;
+}
+.btn-success:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(22,163,74,0.35); }
+
+.btn-danger {
+background: var(–danger);
+color: white;
+}
+.btn-danger:hover { background: #b91c1c; }
+
+.btn-gray {
+background: var(–gray-200);
+color: var(–gray-700);
+}
+.btn-gray:hover { background: var(–gray-300); }
+
+.btn-full { width: 100%; }
+
+.btn-lg { padding: 15px 24px; font-size: 16px; border-radius: var(–radius); }
+
+.btn:disabled {
+opacity: 0.5; cursor: not-allowed;
+transform: none !important; box-shadow: none !important;
+}
+
+/* Empty state */
+.empty-state {
+text-align: center; padding: 60px 20px;
+color: var(–gray-400);
+}
+.empty-state .emoji { font-size: 48px; margin-bottom: 12px; }
+.empty-state p { font-size: 16px; }
+
+/* =========================================
+SEAT BOOKING PAGE
+========================================= */
+.page-header {
+background: linear-gradient(135deg, var(–primary-dark), var(–primary));
+padding: 24px 20px 20px;
+color: white;
+}
+
+.page-header-back {
+display: inline-flex; align-items: center; gap: 6px;
+color: rgba(255,255,255,0.8); font-size: 14px;
+margin-bottom: 12px; cursor: pointer;
+background: none; border: none; padding: 0;
+font-family: ‘Sarabun’, sans-serif;
+}
+
+.page-header-back:hover { color: white; }
+
+.page-header h2 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 22px; font-weight: 700;
+margin-bottom: 4px;
+}
+
+.page-header p { font-size: 14px; color: rgba(255,255,255,0.8); }
+
+.seat-page-layout {
+max-width: 800px; margin: 0 auto;
+padding: 20px 16px;
+display: grid;
+grid-template-columns: 1fr 300px;
+gap: 16px;
+}
+
+/* Bus diagram */
+.bus-diagram {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 20px;
+box-shadow: var(–shadow);
+}
+
+.bus-diagram h3 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 16px; font-weight: 700; color: var(–gray-800);
+margin-bottom: 16px; text-align: center;
+}
+
+.seat-legend {
+display: flex; gap: 16px; justify-content: center;
+margin-bottom: 20px; flex-wrap: wrap;
+}
+
+.legend-item {
+display: flex; align-items: center; gap: 6px;
+font-size: 13px; color: var(–gray-600);
+}
+
+.legend-box {
+width: 22px; height: 22px; border-radius: 5px;
+flex-shrink: 0;
+}
+
+.legend-box.available { background: var(–success-light); border: 2px solid var(–success); }
+.legend-box.selected { background: var(–warning-light); border: 2px solid var(–accent); }
+.legend-box.booked { background: var(–danger-light); border: 2px solid var(–danger); }
+.legend-box.locked { background: var(–gray-200); border: 2px solid var(–gray-400); }
+
+.bus-container {
+background: var(–gray-50);
+border-radius: var(–radius);
+padding: 16px 12px;
+border: 2px solid var(–gray-200);
+max-width: 280px;
+margin: 0 auto;
+}
+
+.bus-front {
+background: linear-gradient(135deg, var(–primary-dark), var(–primary));
+border-radius: 16px 16px 6px 6px;
+padding: 10px;
+text-align: center;
+margin-bottom: 12px;
+color: white; font-size: 12px; font-weight: 700;
+display: flex; align-items: center; justify-content: center; gap: 6px;
+}
+
+.seat-grid {
+display: flex; flex-direction: column; gap: 6px;
+}
+
+.seat-row {
+display: grid;
+grid-template-columns: 1fr 1fr 20px 1fr 1fr;
+gap: 6px;
+align-items: center;
+}
+
+.seat-aisle {
+text-align: center;
+font-size: 9px; color: var(–gray-400);
+}
+
+.seat-btn {
+aspect-ratio: 1;
+border-radius: 6px;
+font-size: 11px; font-weight: 700;
+border: 2px solid transparent;
+display: flex; align-items: center; justify-content: center;
+transition: all 0.15s;
+cursor: pointer;
+font-family: ‘Sarabun’, sans-serif;
+min-width: 0;
+}
+
+.seat-btn.available {
+background: var(–success-light);
+border-color: var(–success);
+color: var(–success);
+}
+
+.seat-btn.available:hover {
+background: var(–success);
+color: white;
+transform: scale(1.08);
+}
+
+.seat-btn.selected {
+background: var(–accent);
+border-color: #c88600;
+color: white;
+transform: scale(1.05);
+box-shadow: 0 3px 8px rgba(240,165,0,0.35);
+}
+
+.seat-btn.booked {
+background: var(–danger-light);
+border-color: var(–danger);
+color: var(–danger);
+cursor: not-allowed;
+}
+
+.seat-btn.locked {
+background: var(–gray-200);
+border-color: var(–gray-400);
+color: var(–gray-400);
+cursor: not-allowed;
+}
+
+/* Booking Summary */
+.booking-summary {
+position: sticky; top: 76px;
+height: fit-content;
+}
+
+.summary-card {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 20px; box-shadow: var(–shadow);
+margin-bottom: 12px;
+}
+
+.summary-card h3 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 15px; font-weight: 700; color: var(–gray-800);
+margin-bottom: 14px;
+padding-bottom: 10px;
+border-bottom: 1px solid var(–gray-100);
+}
+
+.summary-row {
+display: flex; justify-content: space-between; align-items: center;
+padding: 7px 0;
+font-size: 14px; color: var(–gray-600);
+border-bottom: 1px dashed var(–gray-100);
+}
+
+.summary-row:last-child { border-bottom: none; }
+
+.summary-row .val {
+font-weight: 700; color: var(–gray-800);
+}
+
+.summary-total {
+display: flex; justify-content: space-between; align-items: center;
+padding: 12px 0 4px;
+font-family: ‘Kanit’, sans-serif;
+font-size: 17px; font-weight: 700; color: var(–gray-900);
+border-top: 2px solid var(–gray-200);
+margin-top: 8px;
+}
+
+.summary-total .price {
+color: var(–primary); font-size: 20px;
+}
+
+.selected-seats-display {
+display: flex; flex-wrap: wrap; gap: 5px; margin: 8px 0;
+}
+
+.seat-tag {
+background: var(–primary-light);
+color: var(–primary);
+padding: 3px 8px; border-radius: 5px;
+font-size: 12px; font-weight: 700;
+}
+
+/* Discount code */
+.discount-row {
+display: flex; gap: 8px; margin-top: 10px;
+}
+
+.discount-input {
+flex: 1; padding: 9px 12px;
+border: 1.5px solid var(–gray-300);
+border-radius: var(–radius-sm);
+font-size: 13px; font-weight: 600;
+text-transform: uppercase;
+color: var(–gray-800);
+transition: border 0.2s;
+}
+
+.discount-input:focus { border-color: var(–primary); }
+
+.discount-btn {
+background: var(–primary-light);
+color: var(–primary);
+padding: 9px 14px;
+border-radius: var(–radius-sm);
+font-size: 13px; font-weight: 700;
+font-family: ‘Kanit’, sans-serif;
+white-space: nowrap;
+transition: all 0.2s;
+}
+
+.discount-btn:hover { background: var(–primary); color: white; }
+
+.discount-success {
+background: var(–success-light);
+color: var(–success);
+padding: 8px 12px; border-radius: var(–radius-sm);
+font-size: 12px; font-weight: 600;
+margin-top: 8px; display: none;
+}
+
+.discount-error {
+background: var(–danger-light);
+color: var(–danger);
+padding: 8px 12px; border-radius: var(–radius-sm);
+font-size: 12px; font-weight: 600;
+margin-top: 8px; display: none;
+}
+
+/* =========================================
+PAYMENT PAGE
+========================================= */
+.payment-layout {
+max-width: 600px; margin: 0 auto;
+padding: 24px 16px;
+}
+
+.form-card {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 22px; box-shadow: var(–shadow);
+margin-bottom: 16px;
+}
+
+.form-card h3 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 16px; font-weight: 700; color: var(–gray-800);
+margin-bottom: 18px;
+display: flex; align-items: center; gap: 8px;
+}
+
+.form-step-num {
+width: 26px; height: 26px;
+background: var(–primary);
+color: white; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+font-size: 13px; font-weight: 800;
+flex-shrink: 0;
+}
+
+.form-group { margin-bottom: 14px; }
+
+.form-label {
+display: block;
+font-size: 13px; font-weight: 700; color: var(–gray-700);
+margin-bottom: 6px;
+}
+
+.form-label .required { color: var(–danger); }
+
+.form-input {
+width: 100%; padding: 12px 14px;
+border: 1.5px solid var(–gray-300);
+border-radius: var(–radius-sm);
+font-size: 15px; color: var(–gray-800);
+transition: border 0.2s;
+background: white;
+}
+
+.form-input:focus { border-color: var(–primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+
+.form-input.error { border-color: var(–danger); }
+
+/* Booking info summary */
+.booking-info-box {
+background: var(–primary-light);
+border: 1.5px solid rgba(26,86,219,0.2);
+border-radius: var(–radius);
+padding: 16px;
+}
+
+.booking-info-row {
+display: flex; justify-content: space-between;
+padding: 5px 0;
+font-size: 14px;
+}
+
+.booking-info-row .label { color: var(–gray-600); }
+.booking-info-row .val { font-weight: 700; color: var(–gray-800); }
+.booking-info-row.total .val { color: var(–primary); font-size: 18px; font-family: ‘Kanit’, sans-serif; }
+
+.google-form-note {
+background: var(–warning-light);
+border: 1px solid rgba(217,119,6,0.3);
+border-radius: var(–radius-sm);
+padding: 12px; font-size: 13px; color: var(–warning);
+margin-top: 12px; display: none;
+}
+
+/* =========================================
+TICKET PAGE
+========================================= */
+.ticket-page-wrap {
+max-width: 480px; margin: 0 auto;
+padding: 24px 16px;
+}
+
+.ticket {
+background: white;
+border-radius: var(–radius-lg);
+overflow: hidden;
+box-shadow: var(–shadow-lg);
+border: 1.5px solid var(–gray-200);
+}
+
+.ticket-header {
+background: linear-gradient(135deg, var(–primary-dark), var(–primary-mid));
+padding: 24px 24px 20px;
+position: relative;
+overflow: hidden;
+}
+
+.ticket-header::after {
+content: ‘’;
+position: absolute; bottom: -1px; left: 0; right: 0;
+height: 20px;
+background: white;
+border-radius: 50% 50% 0 0 / 20px 20px 0 0;
+}
+
+.ticket-logo {
+font-family: ‘Kanit’, sans-serif;
+font-size: 16px; font-weight: 800; color: white;
+margin-bottom: 16px;
+display: flex; align-items: center; gap: 8px;
+}
+
+.ticket-route-display {
+display: flex; align-items: center; gap: 10px;
+color: white;
+}
+
+.ticket-city { font-family: ‘Kanit’, sans-serif; font-size: 22px; font-weight: 800; }
+.ticket-city-sub { font-size: 12px; opacity: 0.75; }
+
+.ticket-arrow { font-size: 20px; opacity: 0.7; }
+
+.ticket-body { padding: 24px; }
+
+.ticket-booking-id {
+text-align: center; margin-bottom: 20px;
+}
+
+.ticket-id-label {
+font-size: 11px; text-transform: uppercase; letter-spacing: 2px;
+color: var(–gray-400); margin-bottom: 4px;
+}
+
+.ticket-id-val {
+font-family: ‘Kanit’, sans-serif;
+font-size: 28px; font-weight: 800; color: var(–primary);
+letter-spacing: 3px;
+}
+
+.ticket-divider {
+border: none; border-top: 2px dashed var(–gray-200);
+margin: 16px 0;
+position: relative;
+}
+
+.ticket-divider::before, .ticket-divider::after {
+content: ‘’;
+position: absolute; top: -12px;
+width: 22px; height: 22px;
+background: var(–gray-50);
+border-radius: 50%;
+border: 2px solid var(–gray-200);
+}
+
+.ticket-divider::before { left: -32px; }
+.ticket-divider::after { right: -32px; }
+
+.ticket-info-grid {
+display: grid; grid-template-columns: 1fr 1fr;
+gap: 14px; margin-bottom: 16px;
+}
+
+.ticket-info-item .label {
+font-size: 11px; color: var(–gray-400);
+text-transform: uppercase; letter-spacing: 0.5px;
+margin-bottom: 3px;
+}
+
+.ticket-info-item .val {
+font-size: 15px; font-weight: 700; color: var(–gray-800);
+}
+
+.ticket-seats-display {
+display: flex; flex-wrap: wrap; gap: 6px;
+margin-top: 4px;
+}
+
+.ticket-seat-tag {
+background: var(–primary);
+color: white;
+padding: 3px 10px; border-radius: 5px;
+font-size: 13px; font-weight: 700;
+}
+
+.ticket-status-badge {
+display: inline-flex; align-items: center; gap: 5px;
+padding: 8px 16px; border-radius: 20px;
+font-size: 13px; font-weight: 700;
+}
+
+.ticket-status-badge.confirmed {
+background: var(–success-light); color: var(–success);
+}
+
+.ticket-status-badge.pending {
+background: var(–warning-light); color: var(–warning);
+}
+
+.ticket-footer {
+background: var(–gray-50);
+padding: 16px 24px;
+text-align: center;
+border-top: 1px solid var(–gray-200);
+}
+
+.ticket-barcode {
+display: flex; gap: 2px; justify-content: center; margin-bottom: 8px;
+}
+
+.barcode-bar {
+background: var(–gray-800);
+border-radius: 1px;
+}
+
+.ticket-footer p { font-size: 11px; color: var(–gray-400); }
+
+/* =========================================
+CHECK BOOKING PAGE
+========================================= */
+.check-page-wrap {
+max-width: 520px; margin: 0 auto;
+padding: 24px 16px;
+}
+
+.check-box {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 28px; box-shadow: var(–shadow);
+text-align: center;
+margin-bottom: 20px;
+}
+
+.check-box h2 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 22px; font-weight: 700; color: var(–gray-800);
+margin-bottom: 6px;
+}
+
+.check-box p { font-size: 14px; color: var(–gray-500); margin-bottom: 20px; }
+
+.check-input-row {
+display: flex; gap: 8px;
+}
+
+.check-input-row input {
+flex: 1; padding: 13px 16px;
+border: 2px solid var(–gray-300);
+border-radius: var(–radius-sm);
+font-size: 16px; font-weight: 700;
+text-transform: uppercase;
+color: var(–gray-800);
+letter-spacing: 2px;
+}
+
+.check-input-row input:focus { border-color: var(–primary); }
+
+/* =========================================
+ADMIN PAGE
+========================================= */
+.pin-overlay {
+position: fixed; inset: 0; z-index: 1000;
+background: linear-gradient(135deg, var(–primary-dark), var(–primary));
+display: flex; align-items: center; justify-content: center;
+padding: 20px;
+}
+
+.pin-card {
+background: white; border-radius: var(–radius-lg);
+padding: 40px 32px;
+width: 100%; max-width: 360px;
+text-align: center;
+box-shadow: var(–shadow-lg);
+}
+
+.pin-card .logo {
+font-family: ‘Kanit’, sans-serif;
+font-size: 22px; font-weight: 800; color: var(–primary);
+margin-bottom: 8px;
+}
+
+.pin-card h2 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 20px; font-weight: 700; color: var(–gray-800);
+margin-bottom: 6px;
+}
+
+.pin-card p { font-size: 14px; color: var(–gray-500); margin-bottom: 24px; }
+
+.pin-dots {
+display: flex; justify-content: center; gap: 12px; margin-bottom: 24px;
+}
+
+.pin-dot {
+width: 16px; height: 16px; border-radius: 50%;
+background: var(–gray-200);
+transition: all 0.15s;
+}
+
+.pin-dot.filled { background: var(–primary); transform: scale(1.1); }
+
+.pin-keypad {
+display: grid; grid-template-columns: repeat(3, 1fr);
+gap: 10px; margin-bottom: 16px;
+}
+
+.pin-key {
+aspect-ratio: 1;
+background: var(–gray-50);
+border: 2px solid var(–gray-200);
+border-radius: 12px;
+font-family: ‘Kanit’, sans-serif;
+font-size: 20px; font-weight: 700; color: var(–gray-800);
+transition: all 0.15s;
+}
+
+.pin-key:hover { background: var(–primary-light); border-color: var(–primary); color: var(–primary); }
+.pin-key:active { transform: scale(0.94); }
+.pin-key.del { font-size: 16px; color: var(–danger); }
+.pin-key.empty { background: transparent; border: none; cursor: default; }
+
+.pin-error {
+color: var(–danger); font-size: 13px; font-weight: 600; display: none;
+}
+
+/* Admin layout */
+.admin-layout {
+display: grid; grid-template-columns: 220px 1fr;
+min-height: calc(100vh - 60px);
+}
+
+.admin-sidebar {
+background: var(–gray-900);
+padding: 20px 12px;
+position: sticky; top: 60px;
+height: calc(100vh - 60px);
+overflow-y: auto;
+}
+
+.admin-sidebar-title {
+font-family: ‘Kanit’, sans-serif;
+font-size: 11px; font-weight: 700; color: var(–gray-500);
+text-transform: uppercase; letter-spacing: 1.5px;
+padding: 4px 12px; margin-bottom: 8px; margin-top: 16px;
+}
+
+.admin-sidebar-title:first-child { margin-top: 0; }
+
+.admin-nav-item {
+display: flex; align-items: center; gap: 9px;
+padding: 10px 12px; border-radius: var(–radius-sm);
+color: var(–gray-400); font-size: 14px; font-weight: 500;
+cursor: pointer; transition: all 0.2s;
+width: 100%; background: none;
+font-family: ‘Sarabun’, sans-serif;
+}
+
+.admin-nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
+
+.admin-nav-item.active {
+background: rgba(26,86,219,0.25);
+color: #93b4ff;
+}
+
+.admin-nav-item .nav-icon { font-size: 16px; flex-shrink: 0; }
+
+.admin-content {
+padding: 28px;
+overflow-y: auto;
+}
+
+.admin-section { display: none; }
+.admin-section.active { display: block; }
+
+.admin-section-title {
+font-family: ‘Kanit’, sans-serif;
+font-size: 22px; font-weight: 700; color: var(–gray-900);
+margin-bottom: 20px;
+}
+
+/* Stats row */
+.stats-row {
+display: grid; grid-template-columns: repeat(4, 1fr);
+gap: 12px; margin-bottom: 24px;
+}
+
+.stat-card {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+padding: 18px; box-shadow: var(–shadow);
+}
+
+.stat-card .stat-val {
+font-family: ‘Kanit’, sans-serif;
+font-size: 28px; font-weight: 800; color: var(–gray-900);
+margin-bottom: 2px;
+}
+
+.stat-card .stat-label { font-size: 12px; color: var(–gray-500); font-weight: 600; }
+.stat-card .stat-icon { font-size: 24px; float: right; margin-top: -32px; opacity: 0.5; }
+
+/* Admin table */
+.admin-table-wrap {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200);
+box-shadow: var(–shadow); overflow: hidden;
+margin-bottom: 20px;
+}
+
+.admin-table-header {
+padding: 16px 20px;
+display: flex; justify-content: space-between; align-items: center;
+border-bottom: 1px solid var(–gray-200);
+}
+
+.admin-table-header h3 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 16px; font-weight: 700; color: var(–gray-800);
+}
+
+.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+.admin-table th {
+background: var(–gray-50);
+padding: 10px 16px;
+text-align: left;
+font-size: 11px; font-weight: 700;
+color: var(–gray-500); text-transform: uppercase; letter-spacing: 0.5px;
+white-space: nowrap;
+}
+
+.admin-table td {
+padding: 12px 16px;
+border-bottom: 1px solid var(–gray-100);
+color: var(–gray-700); vertical-align: middle;
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(–gray-50); }
+
+.td-actions { display: flex; gap: 6px; }
+
+.btn-sm {
+padding: 5px 10px; border-radius: 6px;
+font-size: 12px; font-weight: 700;
+font-family: ‘Kanit’, sans-serif;
+}
+
+/* Admin form modal */
+.modal-overlay {
+position: fixed; inset: 0; z-index: 1000;
+background: rgba(0,0,0,0.5);
+display: flex; align-items: center; justify-content: center;
+padding: 20px;
+}
+
+.modal {
+background: white; border-radius: var(–radius-lg);
+width: 100%; max-width: 520px;
+max-height: 90vh; overflow-y: auto;
+box-shadow: var(–shadow-lg);
+animation: slideUp 0.25s ease;
+}
+
+.modal-header {
+padding: 20px 24px 16px;
+border-bottom: 1px solid var(–gray-200);
+display: flex; justify-content: space-between; align-items: center;
+}
+
+.modal-header h3 {
+font-family: ‘Kanit’, sans-serif;
+font-size: 18px; font-weight: 700; color: var(–gray-800);
+}
+
+.modal-close {
+background: var(–gray-100); color: var(–gray-600);
+width: 32px; height: 32px; border-radius: 50%;
+font-size: 16px; display: flex; align-items: center; justify-content: center;
+}
+
+.modal-close:hover { background: var(–gray-200); }
+
+.modal-body { padding: 20px 24px; }
+
+.modal-footer {
+padding: 16px 24px;
+border-top: 1px solid var(–gray-200);
+display: flex; gap: 10px; justify-content: flex-end;
+}
+
+/* Seat management */
+.admin-seat-grid {
+display: flex; flex-direction: column; gap: 6px;
+max-width: 260px;
+}
+
+.admin-seat-row {
+display: grid;
+grid-template-columns: 1fr 1fr 20px 1fr 1fr;
+gap: 5px; align-items: center;
+}
+
+.admin-seat-btn {
+aspect-ratio: 1;
+border-radius: 5px;
+font-size: 10px; font-weight: 700;
+border: 2px solid transparent;
+display: flex; align-items: center; justify-content: center;
+cursor: pointer; transition: all 0.15s;
+font-family: ‘Sarabun’, sans-serif;
+}
+
+/* Status badges */
+.badge {
+display: inline-flex; align-items: center;
+padding: 3px 9px; border-radius: 20px;
+font-size: 11px; font-weight: 700;
+white-space: nowrap;
+}
+
+.badge-success { background: var(–success-light); color: var(–success); }
+.badge-warning { background: var(–warning-light); color: var(–warning); }
+.badge-danger { background: var(–danger-light); color: var(–danger); }
+.badge-gray { background: var(–gray-100); color: var(–gray-600); }
+.badge-primary { background: var(–primary-light); color: var(–primary); }
+
+/* Toggle */
+.toggle-row {
+display: flex; align-items: center; justify-content: space-between;
+padding: 10px 0; border-bottom: 1px solid var(–gray-100);
+}
+
+.toggle-row:last-child { border-bottom: none; }
+
+.toggle-label { font-size: 14px; color: var(–gray-700); }
+
+.toggle {
+position: relative; width: 44px; height: 24px;
+}
+
+.toggle input { opacity: 0; width: 0; height: 0; }
+
+.toggle-slider {
+position: absolute; inset: 0;
+background: var(–gray-300); border-radius: 12px;
+cursor: pointer; transition: 0.3s;
+}
+
+.toggle-slider::before {
+content: ‘’;
+position: absolute; height: 18px; width: 18px;
+left: 3px; bottom: 3px;
+background: white; border-radius: 50%;
+transition: 0.3s;
+box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+}
+
+input:checked + .toggle-slider { background: var(–primary); }
+input:checked + .toggle-slider::before { transform: translateX(20px); }
+
+/* Toast */
+.toast {
+position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(80px);
+background: var(–gray-900); color: white;
+padding: 12px 20px; border-radius: var(–radius);
+font-size: 14px; font-weight: 600;
+z-index: 2000;
+transition: transform 0.3s ease;
+white-space: nowrap;
+box-shadow: var(–shadow-lg);
+display: flex; align-items: center; gap: 8px;
+}
+
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { background: var(–success); }
+.toast.error { background: var(–danger); }
+
+/* =========================================
+ALERT POPUP (ติ๊กถูก/ผิด)
+========================================= */
+.alert-overlay {
+position: fixed; inset: 0; z-index: 3000;
+background: rgba(0,0,0,0.45);
+display: flex; align-items: center; justify-content: center;
+padding: 20px;
+animation: fadeIn 0.2s ease;
+}
+.alert-box {
+background: white; border-radius: 24px;
+padding: 44px 36px 32px; width: 100%; max-width: 320px;
+text-align: center;
+box-shadow: 0 24px 64px rgba(0,0,0,0.18);
+animation: alertPop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes alertPop {
+from { opacity: 0; transform: scale(0.7); }
+to { opacity: 1; transform: scale(1); }
+}
+.alert-icon-wrap {
+width: 90px; height: 90px; border-radius: 50%;
+display: flex; align-items: center; justify-content: center;
+margin: 0 auto 20px;
+}
+.alert-icon-wrap.success { background: var(–success-light); border: 3px solid var(–success); }
+.alert-icon-wrap.error { background: var(–danger-light); border: 3px solid var(–danger); }
+.alert-icon-wrap.info { background: #e0f2fe; border: 3px solid #0284c7; }
+.alert-icon-svg { width: 46px; height: 46px; }
+.check-path { stroke-dasharray: 60; stroke-dashoffset: 60; animation: drawCheck 0.4s ease 0.15s forwards; }
+@keyframes drawCheck { to { stroke-dashoffset: 0; } }
+.cross-path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: drawCross 0.3s ease 0.1s forwards; }
+@keyframes drawCross { to { stroke-dashoffset: 0; } }
+.alert-title { font-family: “Kanit”, sans-serif; font-size: 22px; font-weight: 800; color: var(–gray-800); margin-bottom: 8px; }
+.alert-msg { font-size: 15px; color: var(–gray-500); line-height: 1.6; margin-bottom: 24px; }
+.alert-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: “Kanit”, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.alert-btn.success { background: var(–success); color: white; }
+.alert-btn.success:hover { background: #15803d; }
+.alert-btn.error { background: var(–danger); color: white; }
+.alert-btn.info { background: #0284c7; color: white; }
+
+/* =========================================
+HISTORY PAGE
+========================================= */
+.history-wrap { max-width: 600px; margin: 0 auto; padding: 24px 16px; }
+.history-search-box {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200); padding: 22px;
+box-shadow: var(–shadow); margin-bottom: 20px;
+}
+.history-search-box h2 { font-family: “Kanit”, sans-serif; font-size: 20px; font-weight: 700; color: var(–gray-800); margin-bottom: 4px; }
+.history-search-box p { font-size: 13px; color: var(–gray-500); margin-bottom: 16px; }
+.history-card {
+background: white; border-radius: var(–radius);
+border: 1.5px solid var(–gray-200); padding: 18px;
+box-shadow: var(–shadow); margin-bottom: 12px;
+animation: slideUp 0.3s ease both;
+position: relative; overflow: hidden;
+}
+.history-card-bar { position: absolute; left: 0; top: 0; bottom: 0; width: 5px; }
+.history-card-bar.confirmed { background: var(–success); }
+.history-card-bar.pending { background: var(–warning); }
+.history-card-bar.cancelled { background: var(–danger); }
+.history-card-inner { padding-left: 14px; }
+.history-booking-id { font-size: 11px; color: var(–gray-400); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
+.history-route { font-family: “Kanit”, sans-serif; font-size: 17px; font-weight: 700; color: var(–gray-900); margin-bottom: 8px; }
+.history-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(–gray-600); margin-bottom: 10px; }
+.history-footer { display: flex; justify-content: space-between; align-items: center; }
+
+/* seat tooltip */
+.seat-tooltip-container { position: relative; display: inline-block; }
+.seat-map-tooltip {
+position: absolute; bottom: calc(100% + 8px); left: 50%;
+transform: translateX(-50%);
+background: var(–gray-900); color: white;
+padding: 6px 10px; border-radius: 8px;
+font-size: 11px; font-weight: 600;
+pointer-events: none; z-index: 200;
+white-space: nowrap; box-shadow: var(–shadow-md);
+display: none; line-height: 1.5;
+}
+.seat-tooltip-container:hover .seat-map-tooltip { display: block; }
+.seat-map-tooltip::after {
+content: “”; position: absolute; top: 100%; left: 50%;
+transform: translateX(-50%);
+border: 5px solid transparent; border-top-color: var(–gray-900);
+}
+
+/* =========================================
+MOBILE NAV DRAWER
+========================================= */
+.mobile-nav-overlay {
+position: fixed; inset: 0; z-index: 800;
+background: rgba(0,0,0,0.5);
+display: none;
+}
+
+.mobile-nav {
+position: fixed; top: 0; right: -100%; bottom: 0; z-index: 850;
+width: 240px;
+background: var(–gray-900);
+padding: 70px 16px 20px;
+transition: right 0.3s ease;
+box-shadow: var(–shadow-lg);
+}
+
+.mobile-nav.open { right: 0; }
+
+.mobile-nav .nav-link {
+display: block; width: 100%; text-align: left;
+padding: 12px 16px; margin-bottom: 4px;
+color: var(–gray-300); border-radius: var(–radius-sm);
+font-size: 15px;
+}
+
+.mobile-nav .nav-link:hover, .mobile-nav .nav-link.active {
+background: rgba(255,255,255,0.08); color: white;
+}
+
+.mobile-nav .nav-link.admin-btn {
+background: var(–primary); color: white; margin-top: 12px;
+}
+
+/* =========================================
+RESPONSIVE
+========================================= */
+@media (max-width: 768px) {
+.nav-links { display: none; }
+.nav-toggle { display: flex; align-items: center; }
+
+.seat-page-layout {
+grid-template-columns: 1fr;
+}
+
+.booking-summary {
+position: static;
+order: -1;
+}
+
+.stats-row { grid-template-columns: repeat(2, 1fr); }
+
+.admin-layout { grid-template-columns: 1fr; }
+.admin-sidebar {
+position: static; height: auto;
+display: flex; flex-wrap: wrap; gap: 4px;
+padding: 12px; background: var(–gray-800);
+}
+.admin-sidebar-title { display: none; }
+.admin-nav-item { padding: 8px 12px; flex: 1; min-width: 80px; justify-content: center; font-size: 12px; }
+.admin-content { padding: 16px; }
+
+.trip-card-footer { flex-direction: column; }
+.trip-card-footer .btn { width: 100%; }
+
+.modal { max-height: 95vh; }
+
+.ticket-info-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 400px) {
+.stats-row { grid-template-columns: 1fr 1fr; }
+.seat-btn { font-size: 10px; }
+}
+
+/* =========================================
+ANIMATIONS
+========================================= */
+@keyframes fadeIn {
+from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes shake {
+0%, 100% { transform: translateX(0); }
+20%, 60% { transform: translateX(-8px); }
+40%, 80% { transform: translateX(8px); }
+}
+
+.shake { animation: shake 0.4s ease; }
+
+/* Select2-like select for provinces */
+.form-select {
+width: 100%; padding: 12px 14px;
+border: 1.5px solid var(–gray-300);
+border-radius: var(–radius-sm);
+font-size: 15px; color: var(–gray-800);
+background: white;
+appearance: none;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘12’ height=‘8’ viewBox=‘0 0 12 8’%3E%3Cpath d=‘M1 1l5 5 5-5’ stroke=’%2394a3b8’ stroke-width=‘2’ fill=‘none’ stroke-linecap=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 14px center;
+padding-right: 36px;
+cursor: pointer;
+}
+
+.form-select:focus { border-color: var(–primary); box-shadow: 0 0 0 3px rgba(26,86,219,0.08); }
+
+/* Info box */
+.info-box {
+background: var(–primary-light);
+border-left: 4px solid var(–primary);
+border-radius: 0 var(–radius-sm) var(–radius-sm) 0;
+padding: 12px 14px;
+font-size: 13px; color: var(–primary-dark);
+margin-bottom: 16px;
+}
+
+/* Responsive table wrapper */
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+</style>
+
+</head>
+<body>
+
+<!-- ===== NAVIGATION ===== -->
+
+<nav id="nav">
+  <div class="nav-logo">
+    <div class="nav-logo-icon">🚌</div>
+    <span id="site-name">TourBus Pro</span>
+  </div>
+  <div class="nav-links" id="desktop-nav">
+    <button class="nav-link active" onclick="showPage('home')">🏠 ทริปทั้งหมด</button>
+    <button class="nav-link" onclick="showPage('history')">📋 ประวัติจอง</button>
+    <button class="nav-link" onclick="showPage('check')">🔍 ตรวจสอบ</button>
+    <button class="nav-link admin-btn" onclick="showAdminLogin()">⚙️ แอดมิน</button>
+  </div>
+  <button class="nav-toggle" id="nav-toggle" onclick="toggleMobileNav()">☰</button>
+</nav>
+
+<!-- Mobile nav -->
+
+<div class="mobile-nav-overlay" id="mobile-overlay" onclick="closeMobileNav()"></div>
+<div class="mobile-nav" id="mobile-nav">
+  <button class="nav-link active" onclick="showPage('home');closeMobileNav()">🏠 ทริปทั้งหมด</button>
+  <button class="nav-link" onclick="showPage('history');closeMobileNav()">📋 ประวัติจอง</button>
+  <button class="nav-link" onclick="showPage('check');closeMobileNav()">🔍 ตรวจสอบ</button>
+  <button class="nav-link admin-btn" onclick="showAdminLogin();closeMobileNav()">⚙️ แอดมิน</button>
+</div>
+
+<!-- ===== PIN OVERLAY ===== -->
+
+<div class="pin-overlay" id="pin-overlay" style="display:none;">
+  <div class="pin-card">
+    <div class="logo">🚌 TourBus Pro</div>
+    <h2>เข้าสู่ระบบแอดมิน</h2>
+    <p>กรอก PIN 4 หลักเพื่อเข้าใช้งาน</p>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="dot-0"></div>
+      <div class="pin-dot" id="dot-1"></div>
+      <div class="pin-dot" id="dot-2"></div>
+      <div class="pin-dot" id="dot-3"></div>
+    </div>
+    <div class="pin-keypad" id="pin-keypad">
+      <button class="pin-key" onclick="pinKey('1')">1</button>
+      <button class="pin-key" onclick="pinKey('2')">2</button>
+      <button class="pin-key" onclick="pinKey('3')">3</button>
+      <button class="pin-key" onclick="pinKey('4')">4</button>
+      <button class="pin-key" onclick="pinKey('5')">5</button>
+      <button class="pin-key" onclick="pinKey('6')">6</button>
+      <button class="pin-key" onclick="pinKey('7')">7</button>
+      <button class="pin-key" onclick="pinKey('8')">8</button>
+      <button class="pin-key" onclick="pinKey('9')">9</button>
+      <button class="pin-key empty"></button>
+      <button class="pin-key" onclick="pinKey('0')">0</button>
+      <button class="pin-key del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="pin-error" id="pin-error">❌ PIN ไม่ถูกต้อง กรุณาลองใหม่</div>
+    <button class="btn btn-gray" style="width:100%;margin-top:14px;" onclick="closePinOverlay()">ยกเลิก</button>
+  </div>
+</div>
+
+<!-- ===== ALERT POPUP ===== -->
+
+<div id="alert-overlay" style="display:none;"></div>
+
+<!-- ===== TOAST ===== -->
+
+<div class="toast" id="toast"></div>
+
+<!-- ===== MODAL ===== -->
+
+<div class="modal-overlay" id="modal-overlay" style="display:none;" onclick="closeModalOutside(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <h3 id="modal-title">Modal</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-footer" id="modal-footer"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: HOME
+=========================== -->
+
+<div class="page active" id="page-home">
+  <div class="hero">
+    <h1>🚌 จองรถทัวร์ออนไลน์</h1>
+    <p>ง่าย สะดวก ปลอดภัย — เลือกทริปที่ใช่ จองที่นั่งได้ทันที</p>
+    <div class="hero-search">
+      <select id="filter-from" onchange="filterTrips()">
+        <option value="">📍 ต้นทางทั้งหมด</option>
+      </select>
+      <select id="filter-to" onchange="filterTrips()">
+        <option value="">🏁 ปลายทางทั้งหมด</option>
+      </select>
+      <button onclick="clearFilter()">ล้างตัวกรอง</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">ทริปที่เปิดจอง</div>
+      <div class="trip-count" id="trip-count">0 ทริป</div>
+    </div>
+    <div id="trips-list"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: SEAT BOOKING
+=========================== -->
+
+<div class="page" id="page-seats">
+  <div class="page-header">
+    <button class="page-header-back" onclick="showPage('home')">← กลับ</button>
+    <h2 id="seat-trip-name">ชื่อทริป</h2>
+    <p id="seat-trip-info">ต้นทาง → ปลายทาง | วันที่</p>
+  </div>
+  <div class="seat-page-layout">
+    <!-- Summary (mobile: shown first) -->
+    <div class="booking-summary">
+      <div class="summary-card">
+        <h3>📋 สรุปการจอง</h3>
+        <div class="summary-row">
+          <span>ที่นั่งที่เลือก</span>
+          <div class="selected-seats-display" id="selected-seats-display">
+            <span style="color:var(--gray-400);font-size:13px;">ยังไม่ได้เลือก</span>
+          </div>
+        </div>
+        <div class="summary-row">
+          <span>จำนวน</span>
+          <span class="val" id="sum-count">0 ที่นั่ง</span>
+        </div>
+        <div class="summary-row">
+          <span>ราคาต่อที่นั่ง</span>
+          <span class="val" id="sum-price-per">฿0</span>
+        </div>
+        <div class="summary-row">
+          <span>ราคาก่อนส่วนลด</span>
+          <span class="val" id="sum-subtotal">฿0</span>
+        </div>
+        <div class="summary-row" id="sum-discount-row" style="display:none;">
+          <span id="sum-discount-label">ส่วนลด</span>
+          <span class="val" style="color:var(--success);" id="sum-discount-val">-฿0</span>
+        </div>
+        <div class="summary-total">
+          <span>รวมทั้งหมด</span>
+          <span class="price" id="sum-total">฿0</span>
+        </div>
+      </div>
+
+```
+  <div class="summary-card">
+    <h3>🏷️ โค้ดส่วนลด</h3>
+    <div class="discount-row">
+      <input class="discount-input" type="text" id="discount-code-input" placeholder="ใส่โค้ดที่นี่..." maxlength="20">
+      <button class="discount-btn" onclick="applyDiscount()">ใช้โค้ด</button>
+    </div>
+    <div class="discount-success" id="discount-success"></div>
+    <div class="discount-error" id="discount-error"></div>
+  </div>
+
+  <button class="btn btn-success btn-full btn-lg" id="proceed-to-payment-btn"
+    onclick="goToPayment()" disabled>
+    ดำเนินการต่อ →
+  </button>
+</div>
+
+<!-- Bus diagram -->
+<div class="bus-diagram">
+  <h3>เลือกที่นั่งบนรถ</h3>
+  <div class="seat-legend">
+    <div class="legend-item"><div class="legend-box available"></div>ว่าง</div>
+    <div class="legend-item"><div class="legend-box selected"></div>กำลังเลือก</div>
+    <div class="legend-item"><div class="legend-box booked"></div>จองแล้ว</div>
+    <div class="legend-item"><div class="legend-box locked"></div>ล็อค</div>
+  </div>
+  <div class="bus-container">
+    <div class="bus-front">🚌 &nbsp;หน้ารถ &nbsp;👨‍✈️ คนขับ</div>
+    <div class="seat-grid" id="seat-grid"></div>
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: PAYMENT
+=========================== -->
+
+<div class="page" id="page-payment">
+  <div class="page-header">
+    <button class="page-header-back" onclick="showPage('seats')">← กลับ</button>
+    <h2>กรอกข้อมูลผู้โดยสาร</h2>
+    <p>กรุณากรอกข้อมูลให้ครบถ้วน</p>
+  </div>
+  <div class="payment-layout">
+    <div class="form-card">
+      <h3><div class="form-step-num">1</div> ข้อมูลผู้โดยสาร</h3>
+      <div class="form-group">
+        <label class="form-label">ชื่อ <span class="required">*</span></label>
+        <input class="form-input" type="text" id="pay-fname" placeholder="ชื่อ">
+      </div>
+      <div class="form-group">
+        <label class="form-label">นามสกุล <span class="required">*</span></label>
+        <input class="form-input" type="text" id="pay-lname" placeholder="นามสกุล">
+      </div>
+      <div class="form-group">
+        <label class="form-label">เบอร์โทรศัพท์ <span class="required">*</span></label>
+        <input class="form-input" type="tel" id="pay-phone" placeholder="0812345678" maxlength="10">
+      </div>
+    </div>
+
+```
+<div class="form-card">
+  <h3><div class="form-step-num">2</div> สรุปการจอง</h3>
+  <div class="booking-info-box" id="payment-summary-box"></div>
+  <div class="google-form-note" id="google-form-note">
+    🔗 เมื่อกดชำระเงิน ระบบจะเปิด Google Form เพื่อให้คุณแนบหลักฐานการชำระเงิน
+  </div>
+</div>
+
+<button class="btn btn-primary btn-full btn-lg" onclick="submitPayment()">
+  💳 ไปชำระเงิน
+</button>
+```
+
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: TICKET
+=========================== -->
+
+<div class="page" id="page-ticket">
+  <div class="ticket-page-wrap">
+    <div style="text-align:center;margin-bottom:20px;">
+      <div style="font-size:48px;margin-bottom:8px;">✅</div>
+      <h2 style="font-family:'Kanit',sans-serif;font-size:22px;font-weight:700;color:var(--success);">จองสำเร็จ!</h2>
+      <p style="color:var(--gray-500);font-size:14px;">กรุณาบันทึกรหัสการจองไว้</p>
+    </div>
+
+```
+<div class="ticket" id="ticket-display">
+  <!-- filled by JS -->
+</div>
+
+<div style="display:flex;gap:10px;margin-top:16px;">
+  <button class="btn btn-outline btn-full" onclick="showPage('home')">🏠 กลับหน้าแรก</button>
+  <button class="btn btn-primary btn-full" onclick="showPage('check')">🔍 ตรวจสอบการจอง</button>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: CHECK BOOKING
+=========================== -->
+
+<div class="page" id="page-check">
+  <div class="check-page-wrap">
+    <div class="check-box">
+      <div style="font-size:40px;margin-bottom:8px;">🔍</div>
+      <h2>ตรวจสอบการจอง</h2>
+      <p>กรอก Booking ID เพื่อดูข้อมูลการจอง</p>
+      <div class="check-input-row">
+        <input type="text" id="check-input" placeholder="เช่น BK348291"
+          maxlength="12" style="text-transform:uppercase;"
+          onkeydown="if(event.key==='Enter')checkBooking()">
+        <button class="btn btn-primary" onclick="checkBooking()">ค้นหา</button>
+      </div>
+    </div>
+    <div id="check-result"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: HISTORY
+=========================== -->
+
+<div class="page" id="page-history">
+  <div class="history-wrap">
+    <div class="history-search-box">
+      <div style="font-size:36px;margin-bottom:8px;">📋</div>
+      <h2>ประวัติการจอง</h2>
+      <p>กรอกเบอร์โทรหรือ Booking ID เพื่อดูประวัติการจองทั้งหมด</p>
+      <div class="check-input-row" style="margin-bottom:0;">
+        <input type="text" id="history-input" placeholder="เบอร์โทร หรือ Booking ID"
+          style="text-transform:uppercase;"
+          onkeydown="if(event.key==='Enter')searchHistory()">
+        <button class="btn btn-primary" onclick="searchHistory()">🔍 ค้นหา</button>
+      </div>
+    </div>
+    <div id="history-result"></div>
+  </div>
+</div>
+
+<!-- ===========================
+     PAGE: ADMIN
+=========================== -->
+
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="admin-sidebar">
+      <div class="admin-sidebar-title">จัดการ</div>
+      <button class="admin-nav-item active" onclick="switchAdmin('dashboard')" data-section="dashboard">
+        <span class="nav-icon">📊</span> Dashboard
+      </button>
+      <button class="admin-nav-item" onclick="switchAdmin('trips')" data-section="trips">
+        <span class="nav-icon">🗺️</span> ทริป
+      </button>
+      <button class="admin-nav-item" onclick="switchAdmin('seats')" data-section="seats">
+        <span class="nav-icon">💺</span> ที่นั่ง
+      </button>
+      <button class="admin-nav-item" onclick="switchAdmin('discounts')" data-section="discounts">
+        <span class="nav-icon">🏷️</span> ส่วนลด
+      </button>
+      <button class="admin-nav-item" onclick="switchAdmin('passengers')" data-section="passengers">
+        <span class="nav-icon">👥</span> ผู้โดยสาร
+      </button>
+      <div class="admin-sidebar-title">ระบบ</div>
+      <button class="admin-nav-item" onclick="switchAdmin('settings')" data-section="settings">
+        <span class="nav-icon">⚙️</span> ตั้งค่า
+      </button>
+      <button class="admin-nav-item" style="color:var(--danger-light);" onclick="adminLogout()">
+        <span class="nav-icon">🚪</span> ออกจากระบบ
+      </button>
+    </div>
+
+```
+<!-- Content -->
+<div class="admin-content">
+
+  <!-- Dashboard -->
+  <div class="admin-section active" id="admin-dashboard">
+    <div class="admin-section-title">📊 Dashboard</div>
+    <div class="stats-row" id="admin-stats"></div>
+    <div class="admin-table-wrap">
+      <div class="admin-table-header">
+        <h3>การจองล่าสุด</h3>
+      </div>
+      <div class="table-responsive">
+        <table class="admin-table" id="recent-bookings-table">
+          <thead><tr>
+            <th>Booking ID</th><th>ชื่อ</th><th>ทริป</th><th>ที่นั่ง</th><th>ราคา</th><th>สถานะ</th>
+          </tr></thead>
+          <tbody id="recent-bookings-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trips -->
+  <div class="admin-section" id="admin-trips">
+    <div class="admin-section-title">🗺️ จัดการทริป</div>
+    <button class="btn btn-primary" style="margin-bottom:16px;" onclick="openTripModal()">
+      + เพิ่มทริปใหม่
+    </button>
+    <div class="admin-table-wrap">
+      <div class="table-responsive">
+        <table class="admin-table" id="trips-table">
+          <thead><tr>
+            <th>ชื่อทริป</th><th>ต้นทาง</th><th>ปลายทาง</th><th>วันที่</th><th>ราคา</th><th>ที่นั่งว่าง</th><th>จัดการ</th>
+          </tr></thead>
+          <tbody id="trips-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Seats -->
+  <div class="admin-section" id="admin-seats">
+    <div class="admin-section-title">💺 จัดการที่นั่ง</div>
+    <div class="form-group" style="max-width:300px;margin-bottom:20px;">
+      <label class="form-label">เลือกทริป</label>
+      <select class="form-select" id="admin-seat-trip-select" onchange="loadAdminSeats()">
+        <option value="">-- เลือกทริป --</option>
+      </select>
+    </div>
+    <div id="admin-seat-area"></div>
+  </div>
+
+  <!-- Discounts -->
+  <div class="admin-section" id="admin-discounts">
+    <div class="admin-section-title">🏷️ โค้ดส่วนลด</div>
+    <button class="btn btn-primary" style="margin-bottom:16px;" onclick="openDiscountModal()">
+      + สร้างโค้ดใหม่
+    </button>
+    <div class="admin-table-wrap">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead><tr>
+            <th>โค้ด</th><th>ประเภท</th><th>มูลค่า</th><th>ใช้แล้ว</th><th>จำกัดครั้ง</th><th>สถานะ</th><th>จัดการ</th>
+          </tr></thead>
+          <tbody id="discounts-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Passengers -->
+  <div class="admin-section" id="admin-passengers">
+    <div class="admin-section-title">👥 รายชื่อผู้โดยสาร</div>
+    <div class="form-group" style="max-width:300px;margin-bottom:16px;">
+      <select class="form-select" id="pax-trip-filter" onchange="renderPassengers()">
+        <option value="">-- ทริปทั้งหมด --</option>
+      </select>
+    </div>
+    <div class="admin-table-wrap">
+      <div class="table-responsive">
+        <table class="admin-table">
+          <thead><tr>
+            <th>Booking ID</th><th>ชื่อ-นามสกุล</th><th>เบอร์โทร</th><th>ทริป</th><th>ที่นั่ง</th><th>ราคา</th><th>สถานะ</th><th>จัดการ</th>
+          </tr></thead>
+          <tbody id="passengers-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings -->
+  <div class="admin-section" id="admin-settings">
+    <div class="admin-section-title">⚙️ ตั้งค่าระบบ</div>
+    <div class="form-card" style="max-width:480px;">
+      <h3 style="font-family:'Kanit',sans-serif;font-size:16px;font-weight:700;margin-bottom:18px;">ข้อมูลเว็บไซต์</h3>
+      <div class="form-group">
+        <label class="form-label">ชื่อธุรกิจ</label>
+        <input class="form-input" type="text" id="settings-sitename" placeholder="ชื่อธุรกิจของคุณ">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Google Form Link (สำหรับชำระเงิน)</label>
+        <input class="form-input" type="url" id="settings-form-link" placeholder="https://forms.gle/...">
+        <div style="font-size:12px;color:var(--gray-400);margin-top:4px;">ลูกค้าจะถูก redirect ไปหน้านี้หลังกดชำระเงิน</div>
+      </div>
+      <button class="btn btn-primary" onclick="saveSettings()">💾 บันทึกการตั้งค่า</button>
+    </div>
+
+    <div class="form-card" style="max-width:480px;border-color:var(--danger-light);margin-top:8px;">
+      <h3 style="font-family:'Kanit',sans-serif;font-size:15px;font-weight:700;margin-bottom:6px;color:var(--danger);">⚠️ ล้างข้อมูลทดสอบ</h3>
+      <p style="font-size:13px;color:var(--gray-500);margin-bottom:16px;">ใช้เมื่อต้องการเริ่มต้นใหม่ — จะลบทริป, การจอง และโค้ดส่วนลดทั้งหมดออก แต่เก็บการตั้งค่าชื่อและ Form Link ไว้</p>
+      <button class="btn btn-danger" onclick="clearAllData()">🗑️ ล้างข้อมูลทั้งหมด เริ่มต้นใหม่</button>
+    </div>
+  </div>
+
+</div><!-- end admin-content -->
+```
+
+  </div>
+</div>
+
+<!-- ===========================
+     JAVASCRIPT
+=========================== -->
+
+<script>
+// ============================================
+// DATA STORE (localStorage)
+// ============================================
+const PROVINCES = [
+  'กรุงเทพมหานคร','กระบี่','กาญจนบุรี','กาฬสินธุ์','กำแพงเพชร',
+  'ขอนแก่น','จันทบุรี','ฉะเชิงเทรา','ชลบุรี','ชัยนาท',
+  'ชัยภูมิ','ชุมพร','เชียงราย','เชียงใหม่','ตรัง',
+  'ตราด','ตาก','นครนายก','นครปฐม','นครพนม',
+  'นครราชสีมา','นครศรีธรรมราช','นครสวรรค์','นนทบุรี','นราธิวาส',
+  'น่าน','บึงกาฬ','บุรีรัมย์','ปทุมธานี','ประจวบคีรีขันธ์',
+  'ปราจีนบุรี','ปัตตานี','พระนครศรีอยุธยา','พะเยา','พังงา',
+  'พัทลุง','พิจิตร','พิษณุโลก','เพชรบุรี','เพชรบูรณ์',
+  'แพร่','ภูเก็ต','มหาสารคาม','มุกดาหาร','แม่ฮ่องสอน',
+  'ยโสธร','ยะลา','ร้อยเอ็ด','ระนอง','ระยอง',
+  'ราชบุรี','ลพบุรี','ลำปาง','ลำพูน','เลย',
+  'ศรีสะเกษ','สกลนคร','สงขลา','สตูล','สมุทรปราการ',
+  'สมุทรสงคราม','สมุทรสาคร','สระแก้ว','สระบุรี','สิงห์บุรี',
+  'สุโขทัย','สุพรรณบุรี','สุราษฎร์ธานี','สุรินทร์','หนองคาย',
+  'หนองบัวลำภู','อ่างทอง','อำนาจเจริญ','อุดรธานี','อุตรดิตถ์',
+  'อุทัยธานี','อุบลราชธานี','สระบุรี'
+];
+// deduplicate
+const PROVINCES_LIST = [...new Set(PROVINCES)].sort();
+
+function getData(key, def = []) {
+  try { return JSON.parse(localStorage.getItem('tb_' + key)) || def; }
+  catch { return def; }
+}
+function setData(key, val) {
+  localStorage.setItem('tb_' + key, JSON.stringify(val));
+}
+
+function getTrips() { return getData('trips', []); }
+function setTrips(v) { setData('trips', v); }
+function getBookings() { return getData('bookings', []); }
+function setBookings(v) { setData('bookings', v); }
+function getDiscounts() { return getData('discounts', []); }
+function setDiscounts(v) { setData('discounts', v); }
+function getSettings() { return getData('settings', {siteName:'TourBus Pro', formLink:''}); }
+function setSettings(v) { setData('settings', v); }
+
+// Seat state per trip: {tripId: {seatNum: 'booked'|'locked'|'available'}}
+function getSeatState(tripId) {
+  const all = getData('seats', {});
+  return all[tripId] || {};
+}
+function setSeatState(tripId, state) {
+  const all = getData('seats', {});
+  all[tripId] = state;
+  setData('seats', all);
+}
+
+// ============================================
+// SEED DEMO DATA
+// ============================================
+function seedDemoData() {
+  // ไม่ seed ข้อมูล trip ใดๆ — แอดมินต้องเพิ่มทริปเองผ่านหน้า Admin เท่านั้น
+  // seed เฉพาะ discounts ถ้ายังไม่มีเลย
+  if (getDiscounts().length === 0) {
+    setDiscounts([]);
+  }
+  if (!getData('bookings')) {
+    setBookings([]);
+  }
+}
+
+// ============================================
+// PAGE ROUTER
+// ============================================
+let currentPage = 'home';
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  currentPage = id;
+  window.scrollTo(0, 0);
+  // update nav active
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  if (id === 'home') {
+    document.querySelectorAll('.nav-link').forEach(l => { if(l.textContent.includes('ทริป')) l.classList.add('active'); });
+    renderTrips();
+  }
+  if (id === 'check') {
+    document.querySelectorAll('.nav-link').forEach(l => { if(l.textContent.includes('ตรวจสอบ')) l.classList.add('active'); });
+  }
+  if (id === 'history') {
+    document.querySelectorAll('.nav-link').forEach(l => { if(l.textContent.includes('ประวัติ')) l.classList.add('active'); });
+  }
+}
+
+// ============================================
+// MOBILE NAV
+// ============================================
+function toggleMobileNav() {
+  document.getElementById('mobile-nav').classList.toggle('open');
+  document.getElementById('mobile-overlay').style.display = 
+    document.getElementById('mobile-nav').classList.contains('open') ? 'block' : 'none';
+}
+function closeMobileNav() {
+  document.getElementById('mobile-nav').classList.remove('open');
+  document.getElementById('mobile-overlay').style.display = 'none';
+}
+
+// ============================================
+// TOAST
+// ============================================
+let toastTimer;
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show ' + type;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.classList.remove('show'); }, 3000);
+}
+
+// ============================================
+// PROVINCE SELECTS
+// ============================================
+function populateProvinces() {
+  const selects = ['filter-from','filter-to','modal-from','modal-to'];
+  selects.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const cur = el.value;
+    el.innerHTML = el.id.startsWith('filter') 
+      ? '<option value="">📍 ต้นทางทั้งหมด</option>' 
+      : '<option value="">-- เลือกจังหวัด --</option>';
+    if (el.id === 'filter-to') el.options[0].text = '🏁 ปลายทางทั้งหมด';
+    PROVINCES_LIST.forEach(p => {
+      const o = document.createElement('option');
+      o.value = p; o.textContent = p;
+      el.appendChild(o);
+    });
+    if (cur) el.value = cur;
+  });
+}
+
+// ============================================
+// HOMEPAGE: RENDER TRIPS
+// ============================================
+function renderTrips() {
+  const trips = getTrips();
+  const fromVal = document.getElementById('filter-from')?.value || '';
+  const toVal = document.getElementById('filter-to')?.value || '';
+
+  const filtered = trips.filter(t => {
+    return (!fromVal || t.from === fromVal) && (!toVal || t.to === toVal);
+  });
+
+  document.getElementById('trip-count').textContent = filtered.length + ' ทริป';
+
+  const container = document.getElementById('trips-list');
+  const allTrips = getTrips();
+  if (filtered.length === 0) {
+    if (allTrips.length === 0) {
+      // ยังไม่มีทริปเลย — แอดมินต้องเพิ่มก่อน
+      container.innerHTML = `
+        <div class="empty-state">
+          <div class="emoji">🚌</div>
+          <p style="font-size:17px;font-weight:700;color:var(--gray-700);margin-bottom:6px;">ยังไม่มีทริปเปิดจอง</p>
+          <p style="font-size:14px;color:var(--gray-400);">แอดมินสามารถเพิ่มทริปได้ที่หน้า Admin</p>
+        </div>`;
+    } else {
+      container.innerHTML = `<div class="empty-state"><div class="emoji">🔍</div><p>ไม่พบทริปที่ตรงกับการค้นหา<br>กรุณาลองเลือกใหม่</p></div>`;
+    }
+    return;
+  }
+
+  container.innerHTML = filtered.map(trip => {
+    const seatState = getSeatState(trip.id);
+    const bookedCount = Object.values(seatState).filter(s => s === 'booked').length;
+    const lockedCount = Object.values(seatState).filter(s => s === 'locked').length;
+    const available = trip.totalSeats - bookedCount - lockedCount;
+    
+    let seatBadge = '';
+    if (available <= 0) seatBadge = `<span class="seats-badge full">🔴 เต็มแล้ว</span>`;
+    else if (available <= 5) seatBadge = `<span class="seats-badge low">🟡 เหลือ ${available} ที่</span>`;
+    else seatBadge = `<span class="seats-badge good">🟢 ว่าง ${available} ที่</span>`;
+
+    const date = formatDate(trip.date);
+    const disabledBook = available <= 0 ? 'disabled' : '';
+
+    return `
+    <div class="trip-card">
+      <div class="trip-card-header">
+        <div class="trip-name">${trip.name}</div>
+        <div class="trip-price-tag">฿${trip.price.toLocaleString()}</div>
+      </div>
+      <div class="trip-route">
+        <div class="trip-route-city">📍 ${trip.from}</div>
+        <div class="trip-route-arrow">→</div>
+        <div class="trip-route-city">🏁 ${trip.to}</div>
+      </div>
+      <div class="trip-meta">
+        <div class="trip-meta-item"><span class="icon">📅</span>${date}</div>
+        <div class="trip-meta-item"><span class="icon">💺</span>${trip.totalSeats} ที่นั่ง</div>
+        <div class="trip-meta-item">${seatBadge}</div>
+      </div>
+      <div class="trip-card-footer">
+        <button class="btn btn-outline" onclick="openSeatPage('${trip.id}', true)">
+          👁️ ดูที่นั่ง
+        </button>
+        <button class="btn btn-primary" ${disabledBook} onclick="openSeatPage('${trip.id}', false)">
+          🎟️ จองที่นั่ง
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterTrips() { renderTrips(); }
+function clearFilter() {
+  document.getElementById('filter-from').value = '';
+  document.getElementById('filter-to').value = '';
+  renderTrips();
+}
+
+// ============================================
+// SEAT PAGE
+// ============================================
+let currentTripId = null;
+let selectedSeats = [];
+let viewOnly = false;
+let appliedDiscount = null;
+
+function openSeatPage(tripId, isView) {
+  const trips = getTrips();
+  const trip = trips.find(t => t.id === tripId);
+  if (!trip) return;
+
+  currentTripId = tripId;
+  selectedSeats = [];
+  appliedDiscount = null;
+  viewOnly = isView;
+
+  document.getElementById('seat-trip-name').textContent = trip.name;
+  document.getElementById('seat-trip-info').textContent = `${trip.from} → ${trip.to}  |  ${formatDate(trip.date)}`;
+  document.getElementById('sum-price-per').textContent = '฿' + trip.price.toLocaleString();
+
+  // Reset discount UI
+  document.getElementById('discount-code-input').value = '';
+  document.getElementById('discount-success').style.display = 'none';
+  document.getElementById('discount-error').style.display = 'none';
+  document.getElementById('sum-discount-row').style.display = 'none';
+
+  renderSeatGrid();
+  updateSeatSummary();
+  showPage('seats');
+}
+
+function renderSeatGrid() {
+  const seatState = getSeatState(currentTripId);
+  const grid = document.getElementById('seat-grid');
+  grid.innerHTML = '';
+
+  // 40 seats: rows 1..10, each row: A, B, aisle, C, D
+  const seats = [];
+  for (let row = 1; row <= 10; row++) {
+    ['A','B','','C','D'].forEach((col, ci) => {
+      if (col === '') { seats.push({type:'aisle', row}); return; }
+      const num = (row - 1) * 4 + (ci < 2 ? ci + 1 : ci);
+      seats.push({type:'seat', num, row, col});
+    });
+  }
+
+  let rowEl = null, prevRow = 0;
+  seats.forEach(s => {
+    if (s.row !== prevRow) {
+      rowEl = document.createElement('div');
+      rowEl.className = 'seat-row';
+      grid.appendChild(rowEl);
+      prevRow = s.row;
+    }
+    if (s.type === 'aisle') {
+      const a = document.createElement('div');
+      a.className = 'seat-aisle';
+      a.textContent = s.row;
+      rowEl.appendChild(a);
+      return;
+    }
+    const state = seatState[s.num] || 'available';
+    const isSelected = selectedSeats.includes(s.num);
+    const btn = document.createElement('button');
+    btn.className = 'seat-btn ' + (isSelected ? 'selected' : state);
+    btn.textContent = s.num;
+    btn.dataset.num = s.num;
+
+    if (state === 'available' && !viewOnly) {
+      btn.onclick = () => toggleSeat(s.num);
+    } else if (state !== 'available' || viewOnly) {
+      btn.style.cursor = 'default';
+    }
+    rowEl.appendChild(btn);
+  });
+}
+
+function toggleSeat(num) {
+  const idx = selectedSeats.indexOf(num);
+  if (idx > -1) selectedSeats.splice(idx, 1);
+  else selectedSeats.push(num);
+  renderSeatGrid();
+  updateSeatSummary();
+}
+
+function updateSeatSummary() {
+  const trips = getTrips();
+  const trip = trips.find(t => t.id === currentTripId);
+  if (!trip) return;
+
+  const count = selectedSeats.length;
+  const subtotal = count * trip.price;
+  let discount = 0;
+
+  if (appliedDiscount && count > 0) {
+    if (appliedDiscount.type === 'percent') discount = Math.floor(subtotal * appliedDiscount.value / 100);
+    else discount = Math.min(appliedDiscount.value, subtotal);
+  }
+
+  const total = subtotal - discount;
+
+  const display = document.getElementById('selected-seats-display');
+  if (count === 0) {
+    display.innerHTML = '<span style="color:var(--gray-400);font-size:13px;">ยังไม่ได้เลือก</span>';
+  } else {
+    display.innerHTML = selectedSeats.sort((a,b)=>a-b).map(n => `<span class="seat-tag">${n}</span>`).join('');
+  }
+
+  document.getElementById('sum-count').textContent = count + ' ที่นั่ง';
+  document.getElementById('sum-subtotal').textContent = '฿' + subtotal.toLocaleString();
+  document.getElementById('sum-total').textContent = '฿' + total.toLocaleString();
+
+  if (discount > 0) {
+    document.getElementById('sum-discount-row').style.display = 'flex';
+    document.getElementById('sum-discount-label').textContent = 'ส่วนลด (' + appliedDiscount.code + ')';
+    document.getElementById('sum-discount-val').textContent = '-฿' + discount.toLocaleString();
+  } else {
+    document.getElementById('sum-discount-row').style.display = 'none';
+  }
+
+  document.getElementById('proceed-to-payment-btn').disabled = count === 0 || viewOnly;
+}
+
+// ============================================
+// DISCOUNT
+// ============================================
+function applyDiscount() {
+  const code = document.getElementById('discount-code-input').value.trim().toUpperCase();
+  const okEl = document.getElementById('discount-success');
+  const errEl = document.getElementById('discount-error');
+  okEl.style.display = 'none';
+  errEl.style.display = 'none';
+
+  if (!code) { errEl.textContent = '❌ กรุณากรอกโค้ดส่วนลด'; errEl.style.display = 'block'; return; }
+
+  const discounts = getDiscounts();
+  const d = discounts.find(x => x.code === code && x.active);
+
+  if (!d) { errEl.textContent = '❌ โค้ดไม่ถูกต้องหรือหมดอายุแล้ว'; errEl.style.display = 'block'; appliedDiscount = null; updateSeatSummary(); return; }
+  if (d.limit > 0 && d.uses >= d.limit) { errEl.textContent = '❌ โค้ดนี้ถูกใช้ครบแล้ว'; errEl.style.display = 'block'; appliedDiscount = null; updateSeatSummary(); return; }
+
+  appliedDiscount = d;
+  const desc = d.type === 'percent' ? `ลด ${d.value}%` : `ลด ฿${d.value}`;
+  okEl.textContent = `✅ ใช้โค้ด ${code} — ${desc}`;
+  okEl.style.display = 'block';
+  updateSeatSummary();
+}
+
+// ============================================
+// PAYMENT
+// ============================================
+function goToPayment() {
+  if (selectedSeats.length === 0) return;
+  renderPaymentSummary();
+  showPage('payment');
+}
+
+function renderPaymentSummary() {
+  const trips = getTrips();
+  const trip = trips.find(t => t.id === currentTripId);
+  const settings = getSettings();
+
+  const count = selectedSeats.length;
+  const subtotal = count * trip.price;
+  let discount = 0;
+  if (appliedDiscount) {
+    if (appliedDiscount.type === 'percent') discount = Math.floor(subtotal * appliedDiscount.value / 100);
+    else discount = Math.min(appliedDiscount.value, subtotal);
+  }
+  const total = subtotal - discount;
+
+  let html = `
+    <div class="booking-info-row"><span class="label">ทริป</span><span class="val">${trip.name}</span></div>
+    <div class="booking-info-row"><span class="label">เส้นทาง</span><span class="val">${trip.from} → ${trip.to}</span></div>
+    <div class="booking-info-row"><span class="label">วันที่</span><span class="val">${formatDate(trip.date)}</span></div>
+    <div class="booking-info-row"><span class="label">ที่นั่ง</span><span class="val">${selectedSeats.sort((a,b)=>a-b).join(', ')}</span></div>
+    <div class="booking-info-row"><span class="label">ราคารวม</span><span class="val">฿${subtotal.toLocaleString()}</span></div>
+  `;
+  if (discount > 0) html += `<div class="booking-info-row"><span class="label">ส่วนลด</span><span class="val" style="color:var(--success)">-฿${discount.toLocaleString()}</span></div>`;
+  html += `<div class="booking-info-row total"><span class="label">💳 ยอดที่ต้องชำระ</span><span class="val">฿${total.toLocaleString()}</span></div>`;
+
+  document.getElementById('payment-summary-box').innerHTML = html;
+
+  const noteEl = document.getElementById('google-form-note');
+  noteEl.style.display = settings.formLink ? 'block' : 'none';
+}
+
+function submitPayment() {
+  const fname = document.getElementById('pay-fname').value.trim();
+  const lname = document.getElementById('pay-lname').value.trim();
+  const phone = document.getElementById('pay-phone').value.trim();
+
+  if (!fname || !lname || !phone) {
+    showToast('❌ กรุณากรอกข้อมูลให้ครบ', 'error');
+    ['pay-fname','pay-lname','pay-phone'].forEach(id => {
+      if (!document.getElementById(id).value.trim()) document.getElementById(id).classList.add('error');
+      else document.getElementById(id).classList.remove('error');
+    });
+    return;
+  }
+
+  if (!/^0[0-9]{8,9}$/.test(phone)) {
+    showToast('❌ เบอร์โทรศัพท์ไม่ถูกต้อง', 'error');
+    document.getElementById('pay-phone').classList.add('error');
+    return;
+  }
+
+  const trips = getTrips();
+  const trip = trips.find(t => t.id === currentTripId);
+  const count = selectedSeats.length;
+  const subtotal = count * trip.price;
+  let discount = 0;
+  if (appliedDiscount) {
+    if (appliedDiscount.type === 'percent') discount = Math.floor(subtotal * appliedDiscount.value / 100);
+    else discount = Math.min(appliedDiscount.value, subtotal);
+  }
+  const total = subtotal - discount;
+
+  // Create booking
+  const bookingId = 'BK' + Math.floor(100000 + Math.random() * 900000);
+  const booking = {
+    id: bookingId, fname, lname, phone,
+    tripId: currentTripId, tripName: trip.name,
+    from: trip.from, to: trip.to, date: trip.date,
+    seats: [...selectedSeats],
+    subtotal, discount, totalPrice: total,
+    discountCode: appliedDiscount ? appliedDiscount.code : null,
+    status: 'pending',
+    createdAt: new Date().toISOString()
+  };
+
+  // Save booking
+  const bookings = getBookings();
+  bookings.push(booking);
+  setBookings(bookings);
+
+  // Mark seats as booked
+  const seatState = getSeatState(currentTripId);
+  selectedSeats.forEach(n => { seatState[n] = 'booked'; });
+  setSeatState(currentTripId, seatState);
+
+  // Increment discount use
+  if (appliedDiscount) {
+    const discounts = getDiscounts();
+    const d = discounts.find(x => x.code === appliedDiscount.code);
+    if (d) { d.uses++; setDiscounts(discounts); }
+  }
+
+  // Show ticket
+  renderTicket(booking);
+  showAlert_booking(booking);
+  setTimeout(() => showPage('ticket'), 2000);
+
+  // Open Google Form
+  const settings = getSettings();
+  if (settings.formLink) {
+    setTimeout(() => { window.open(settings.formLink, '_blank'); }, 800);
+  }
+
+  // Clear form
+  document.getElementById('pay-fname').value = '';
+  document.getElementById('pay-lname').value = '';
+  document.getElementById('pay-phone').value = '';
+  selectedSeats = [];
+  appliedDiscount = null;
+}
+
+// ============================================
+// TICKET
+// ============================================
+function renderTicket(b) {
+  const trip = getTrips().find(t => t.id === b.tripId) || {};
+  const bars = Array.from({length:40}, (_,i) => {
+    const w = [2,3,1,4,2,1,3,2,4,1,2,3,1,2,4,3,1,2,4,2,3,1,2,3,4,1,2,3,1,4,2,3,1,4,2,1,3,2,4,1][i] || 2;
+    const h = 28 + (i % 3 === 0 ? 14 : i % 2 === 0 ? 8 : 0);
+    return `<div class="barcode-bar" style="width:${w}px;height:${h}px;"></div>`;
+  }).join('');
+
+  document.getElementById('ticket-display').innerHTML = `
+    <div class="ticket-header">
+      <div class="ticket-logo">🚌 TourBus Pro</div>
+      <div class="ticket-route-display">
+        <div><div class="ticket-city">${b.from}</div><div class="ticket-city-sub">ต้นทาง</div></div>
+        <div class="ticket-arrow">✈</div>
+        <div><div class="ticket-city">${b.to}</div><div class="ticket-city-sub">ปลายทาง</div></div>
+      </div>
+    </div>
+    <div class="ticket-body">
+      <div class="ticket-booking-id">
+        <div class="ticket-id-label">Booking ID</div>
+        <div class="ticket-id-val">${b.id}</div>
+      </div>
+      <hr class="ticket-divider">
+      <div class="ticket-info-grid">
+        <div class="ticket-info-item"><div class="label">ชื่อผู้จอง</div><div class="val">${b.fname} ${b.lname}</div></div>
+        <div class="ticket-info-item"><div class="label">เบอร์โทร</div><div class="val">${b.phone}</div></div>
+        <div class="ticket-info-item"><div class="label">ทริป</div><div class="val">${b.tripName}</div></div>
+        <div class="ticket-info-item"><div class="label">วันที่เดินทาง</div><div class="val">${formatDate(b.date)}</div></div>
+        <div class="ticket-info-item" style="grid-column:1/-1">
+          <div class="label">ที่นั่ง</div>
+          <div class="ticket-seats-display">${b.seats.sort((a,c)=>a-c).map(n=>`<span class="ticket-seat-tag">${n}</span>`).join('')}</div>
+        </div>
+        <div class="ticket-info-item"><div class="label">ราคารวม</div><div class="val" style="color:var(--primary);font-size:18px;font-family:'Kanit',sans-serif;">฿${b.totalPrice.toLocaleString()}</div></div>
+        <div class="ticket-info-item"><div class="label">สถานะ</div><div class="val"><span class="ticket-status-badge pending">⏳ รอชำระเงิน</span></div></div>
+      </div>
+    </div>
+    <div class="ticket-footer">
+      <div class="ticket-barcode">${bars}</div>
+      <p>กรุณาแสดงตั๋วนี้กับเจ้าหน้าที่ก่อนขึ้นรถ</p>
+      <p style="margin-top:4px;font-size:10px;color:var(--gray-300);">${b.createdAt.slice(0,19).replace('T',' ')}</p>
+    </div>
+  `;
+}
+
+// ============================================
+// CHECK BOOKING
+// ============================================
+function checkBooking() {
+  const id = document.getElementById('check-input').value.trim().toUpperCase();
+  const result = document.getElementById('check-result');
+  if (!id) { result.innerHTML = ''; return; }
+
+  const bookings = getBookings();
+  const b = bookings.find(x => x.id === id);
+
+  if (!b) {
+    result.innerHTML = `<div class="empty-state"><div class="emoji">😕</div><p>ไม่พบการจองรหัส <strong>${id}</strong><br>กรุณาตรวจสอบรหัสอีกครั้ง</p></div>`;
+    return;
+  }
+
+  const statusColor = b.status === 'confirmed' ? 'success' : b.status === 'cancelled' ? 'danger' : 'warning';
+  const statusText = b.status === 'confirmed' ? '✅ ยืนยันแล้ว' : b.status === 'cancelled' ? '❌ ยกเลิก' : '⏳ รอชำระเงิน';
+
+  result.innerHTML = `
+    <div class="ticket" style="max-width:100%;">
+      <div class="ticket-header">
+        <div class="ticket-logo">🚌 TourBus Pro</div>
+        <div class="ticket-route-display">
+          <div><div class="ticket-city">${b.from}</div><div class="ticket-city-sub">ต้นทาง</div></div>
+          <div class="ticket-arrow">→</div>
+          <div><div class="ticket-city">${b.to}</div><div class="ticket-city-sub">ปลายทาง</div></div>
+        </div>
+      </div>
+      <div class="ticket-body">
+        <div class="ticket-booking-id">
+          <div class="ticket-id-label">Booking ID</div>
+          <div class="ticket-id-val">${b.id}</div>
+        </div>
+        <hr class="ticket-divider">
+        <div class="ticket-info-grid">
+          <div class="ticket-info-item"><div class="label">ชื่อผู้จอง</div><div class="val">${b.fname} ${b.lname}</div></div>
+          <div class="ticket-info-item"><div class="label">เบอร์โทร</div><div class="val">${b.phone}</div></div>
+          <div class="ticket-info-item"><div class="label">ทริป</div><div class="val">${b.tripName}</div></div>
+          <div class="ticket-info-item"><div class="label">วันที่เดินทาง</div><div class="val">${formatDate(b.date)}</div></div>
+          <div class="ticket-info-item" style="grid-column:1/-1">
+            <div class="label">ที่นั่ง</div>
+            <div class="ticket-seats-display">${b.seats.sort((a,c)=>a-c).map(n=>`<span class="ticket-seat-tag">${n}</span>`).join('')}</div>
+          </div>
+          <div class="ticket-info-item"><div class="label">ราคา</div><div class="val" style="color:var(--primary);">฿${b.totalPrice.toLocaleString()}</div></div>
+          <div class="ticket-info-item"><div class="label">สถานะ</div><div class="val"><span class="ticket-status-badge ${statusColor}">${statusText}</span></div></div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// ============================================
+// ADMIN PIN
+// ============================================
+let pinBuffer = '';
+const CORRECT_PIN = '1410';
+
+function showAdminLogin() {
+  pinBuffer = '';
+  updatePinDots();
+  document.getElementById('pin-error').style.display = 'none';
+  document.getElementById('pin-overlay').style.display = 'flex';
+}
+
+function closePinOverlay() {
+  document.getElementById('pin-overlay').style.display = 'none';
+  pinBuffer = '';
+}
+
+function pinKey(k) {
+  if (pinBuffer.length >= 4) return;
+  pinBuffer += k;
+  updatePinDots();
+  if (pinBuffer.length === 4) {
+    setTimeout(() => {
+      if (pinBuffer === CORRECT_PIN) {
+        closePinOverlay();
+        loadAdminData();
+        showPage('admin');
+      } else {
+        document.getElementById('pin-error').style.display = 'block';
+        document.getElementById('pin-keypad').classList.add('shake');
+        setTimeout(() => document.getElementById('pin-keypad').classList.remove('shake'), 400);
+        pinBuffer = '';
+        updatePinDots();
+      }
+    }, 100);
+  }
+}
+
+function pinDel() {
+  pinBuffer = pinBuffer.slice(0, -1);
+  updatePinDots();
+}
+
+function updatePinDots() {
+  for (let i = 0; i < 4; i++) {
+    const dot = document.getElementById('dot-' + i);
+    dot.classList.toggle('filled', i < pinBuffer.length);
+  }
+}
+
+function adminLogout() {
+  showPage('home');
+  showToast('ออกจากระบบแอดมินแล้ว');
+}
+
+// ============================================
+// ADMIN SECTIONS
+// ============================================
+function switchAdmin(section) {
+  document.querySelectorAll('.admin-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.admin-nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('admin-' + section).classList.add('active');
+  document.querySelector(`[data-section="${section}"]`)?.classList.add('active');
+
+  if (section === 'dashboard') renderAdminDashboard();
+  if (section === 'trips') renderAdminTrips();
+  if (section === 'seats') renderAdminSeatTripSelect();
+  if (section === 'discounts') renderAdminDiscounts();
+  if (section === 'passengers') renderAdminPassengerFilter();
+  if (section === 'settings') loadSettings();
+}
+
+function loadAdminData() {
+  renderAdminDashboard();
+  renderAdminTrips();
+  renderAdminSeatTripSelect();
+  renderAdminDiscounts();
+  renderAdminPassengerFilter();
+  loadSettings();
+}
+
+// Dashboard
+function renderAdminDashboard() {
+  const trips = getTrips();
+  const bookings = getBookings();
+  const confirmed = bookings.filter(b => b.status === 'confirmed').length;
+  const revenue = bookings.filter(b => b.status === 'confirmed').reduce((s,b) => s+b.totalPrice, 0);
+
+  document.getElementById('admin-stats').innerHTML = `
+    <div class="stat-card"><div class="stat-icon">🗺️</div><div class="stat-val">${trips.length}</div><div class="stat-label">ทริปทั้งหมด</div></div>
+    <div class="stat-card"><div class="stat-icon">🎫</div><div class="stat-val">${bookings.length}</div><div class="stat-label">การจองทั้งหมด</div></div>
+    <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-val">${confirmed}</div><div class="stat-label">ยืนยันแล้ว</div></div>
+    <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val">฿${revenue.toLocaleString()}</div><div class="stat-label">รายได้รวม</div></div>
+  `;
+
+  const recent = [...bookings].reverse().slice(0, 10);
+  document.getElementById('recent-bookings-body').innerHTML = recent.length ? recent.map(b => `
+    <tr>
+      <td style="font-weight:700;color:var(--primary);">${b.id}</td>
+      <td>${b.fname} ${b.lname}</td>
+      <td>${b.tripName}</td>
+      <td>${b.seats.join(', ')}</td>
+      <td>฿${b.totalPrice.toLocaleString()}</td>
+      <td>${statusBadge(b.status)}</td>
+    </tr>
+  `).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--gray-400);padding:24px;">ยังไม่มีการจอง</td></tr>';
+}
+
+function statusBadge(s) {
+  if (s === 'confirmed') return '<span class="badge badge-success">✅ ยืนยัน</span>';
+  if (s === 'cancelled') return '<span class="badge badge-danger">❌ ยกเลิก</span>';
+  return '<span class="badge badge-warning">⏳ รอชำระ</span>';
+}
+
+// Trips
+function renderAdminTrips() {
+  const trips = getTrips();
+  document.getElementById('trips-tbody').innerHTML = trips.length ? trips.map(t => {
+    const seatState = getSeatState(t.id);
+    const booked = Object.values(seatState).filter(s=>s==='booked').length;
+    const locked = Object.values(seatState).filter(s=>s==='locked').length;
+    const avail = t.totalSeats - booked - locked;
+    return `
+    <tr>
+      <td style="font-weight:700;">${t.name}</td>
+      <td>${t.from}</td>
+      <td>${t.to}</td>
+      <td>${formatDate(t.date)}</td>
+      <td>฿${t.price.toLocaleString()}</td>
+      <td><span class="badge ${avail>5?'badge-success':avail>0?'badge-warning':'badge-danger'}">${avail} / ${t.totalSeats}</span></td>
+      <td class="td-actions">
+        <button class="btn btn-outline btn-sm" onclick="openTripModal('${t.id}')">✏️ แก้ไข</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteTrip('${t.id}')">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:24px;">ยังไม่มีทริป</td></tr>';
+}
+
+function openTripModal(tripId = null) {
+  const trip = tripId ? getTrips().find(t => t.id === tripId) : null;
+  const title = trip ? 'แก้ไขทริป' : 'เพิ่มทริปใหม่';
+
+  // Build province options
+  const provOpts = PROVINCES_LIST.map(p => `<option value="${p}" ${trip && trip.from===p?'selected':''}>${p}</option>`).join('');
+  const provOpts2 = PROVINCES_LIST.map(p => `<option value="${p}" ${trip && trip.to===p?'selected':''}>${p}</option>`).join('');
+
+  const body = `
+    <div class="form-group">
+      <label class="form-label">ชื่อทริป <span class="required">*</span></label>
+      <input class="form-input" id="modal-trip-name" value="${trip ? trip.name : ''}" placeholder="เช่น Open House CU">
+    </div>
+    <div class="form-group">
+      <label class="form-label">จังหวัดต้นทาง <span class="required">*</span></label>
+      <select class="form-select" id="modal-from"><option value="">-- เลือก --</option>${provOpts}</select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">จังหวัดปลายทาง <span class="required">*</span></label>
+      <select class="form-select" id="modal-to"><option value="">-- เลือก --</option>${provOpts2}</select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">ราคา/คน (บาท) <span class="required">*</span></label>
+      <input class="form-input" type="number" id="modal-price" value="${trip ? trip.price : ''}" placeholder="300">
+    </div>
+    <div class="form-group">
+      <label class="form-label">วันที่เดินทาง <span class="required">*</span></label>
+      <input class="form-input" type="date" id="modal-date" value="${trip ? trip.date : ''}">
+    </div>
+  `;
+  const footer = `
+    <button class="btn btn-gray" onclick="closeModal()">ยกเลิก</button>
+    <button class="btn btn-primary" onclick="saveTrip('${tripId || ''}')">💾 บันทึก</button>
+  `;
+  openModal(title, body, footer);
+}
+
+function saveTrip(tripId) {
+  const name = document.getElementById('modal-trip-name').value.trim();
+  const from = document.getElementById('modal-from').value;
+  const to = document.getElementById('modal-to').value;
+  const price = parseInt(document.getElementById('modal-price').value);
+  const date = document.getElementById('modal-date').value;
+
+  if (!name || !from || !to || !price || !date) {
+    showToast('❌ กรุณากรอกข้อมูลให้ครบ', 'error'); return;
+  }
+
+  const trips = getTrips();
+  if (tripId) {
+    const idx = trips.findIndex(t => t.id === tripId);
+    if (idx > -1) Object.assign(trips[idx], {name, from, to, price, date});
+  } else {
+    trips.push({ id: 'T' + Date.now(), name, from, to, price, date, totalSeats: 40 });
+  }
+  setTrips(trips);
+  closeModal();
+  renderAdminTrips();
+  showAlert('success', 'บันทึกทริปสำเร็จ!', `ทริป <b>${name}</b> ถูกบันทึกเรียบร้อยแล้ว`);
+}
+
+function deleteTrip(tripId) {
+  showConfirm('ลบทริป?', 'ยืนยันว่าต้องการลบทริปนี้ออกจากระบบ', function() { _doDeleteTrip(tripId); }); }
+function _doDeleteTrip(tripId) {
+  const trips = getTrips().filter(t => t.id !== tripId);
+  setTrips(trips);
+  renderAdminTrips();
+  showToast('🗑️ ลบทริปแล้ว');
+}
+
+// Seat admin
+function renderAdminSeatTripSelect() {
+  const trips = getTrips();
+  const sel = document.getElementById('admin-seat-trip-select');
+  sel.innerHTML = '<option value="">-- เลือกทริป --</option>' + 
+    trips.map(t => `<option value="${t.id}">${t.name} (${t.from}→${t.to})</option>`).join('');
+}
+
+function loadAdminSeats() {
+  const tripId = document.getElementById('admin-seat-trip-select').value;
+  const area = document.getElementById('admin-seat-area');
+  if (!tripId) { area.innerHTML = ''; return; }
+
+  const seatState = getSeatState(tripId);
+  area.innerHTML = `
+    <div class="info-box">คลิกที่นั่งเพื่อ ล็อค / ปลดล็อค (ที่นั่งที่ถูกจองแล้วไม่สามารถแก้ไขได้)</div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;">
+      <div>
+        <div class="seat-legend" style="justify-content:flex-start;margin-bottom:12px;">
+          <div class="legend-item"><div class="legend-box available"></div>ว่าง</div>
+          <div class="legend-item"><div class="legend-box booked"></div>จองแล้ว</div>
+          <div class="legend-item"><div class="legend-box locked"></div>ล็อค</div>
+        </div>
+        <div class="bus-container" style="max-width:240px;">
+          <div class="bus-front">🚌 หน้ารถ</div>
+          <div class="admin-seat-grid" id="admin-seat-grid"></div>
+        </div>
+      </div>
+      <div>
+        <div class="summary-card" style="min-width:160px;">
+          <h3>สรุปที่นั่ง</h3>
+          <div id="admin-seat-stats"></div>
+        </div>
+      </div>
+    </div>
+  `;
+  renderAdminSeatGridV2(tripId);
+}
+
+function renderAdminSeatGrid(tripId) {
+  const seatState = getSeatState(tripId);
+  const grid = document.getElementById('admin-seat-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  for (let row = 1; row <= 10; row++) {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'admin-seat-row';
+    ['A','B','','C','D'].forEach((col, ci) => {
+      if (col === '') {
+        const a = document.createElement('div');
+        a.className = 'seat-aisle';
+        rowEl.appendChild(a);
+        return;
+      }
+      const num = (row-1)*4 + (ci<2?ci+1:ci);
+      const state = seatState[num] || 'available';
+      const btn = document.createElement('button');
+      btn.className = 'admin-seat-btn ' + state;
+      Object.assign(btn.style, {
+        background: state==='booked'?'var(--danger-light)':state==='locked'?'var(--gray-200)':'var(--success-light)',
+        borderColor: state==='booked'?'var(--danger)':state==='locked'?'var(--gray-400)':'var(--success)',
+        color: state==='booked'?'var(--danger)':state==='locked'?'var(--gray-500)':'var(--success)',
+        cursor: state==='booked'?'not-allowed':'pointer'
+      });
+      btn.textContent = num;
+      if (state !== 'booked') btn.onclick = () => toggleAdminSeat(tripId, num);
+      rowEl.appendChild(btn);
+    });
+    grid.appendChild(rowEl);
+  }
+
+  // Stats
+  const booked = Object.values(seatState).filter(s=>s==='booked').length;
+  const locked = Object.values(seatState).filter(s=>s==='locked').length;
+  const avail = 40 - booked - locked;
+  const statsEl = document.getElementById('admin-seat-stats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="summary-row"><span>ว่าง</span><span class="val" style="color:var(--success);">${avail}</span></div>
+    <div class="summary-row"><span>จองแล้ว</span><span class="val" style="color:var(--danger);">${booked}</span></div>
+    <div class="summary-row"><span>ล็อค</span><span class="val" style="color:var(--gray-500);">${locked}</span></div>
+    <div class="summary-row"><span>ทั้งหมด</span><span class="val">40</span></div>
+  `;
+}
+
+function toggleAdminSeat(tripId, num) {
+  const seatState = getSeatState(tripId);
+  const cur = seatState[num] || 'available';
+  seatState[num] = cur === 'available' ? 'locked' : 'available';
+  setSeatState(tripId, seatState);
+  renderAdminSeatGridV2(tripId);
+  showToast(seatState[num] === 'locked' ? `🔒 ล็อคที่นั่ง ${num}` : `🔓 ปลดล็อคที่นั่ง ${num}`);
+}
+
+// Discounts
+function renderAdminDiscounts() {
+  const discounts = getDiscounts();
+  document.getElementById('discounts-tbody').innerHTML = discounts.length ? discounts.map(d => `
+    <tr>
+      <td style="font-weight:700;letter-spacing:1px;color:var(--primary);">${d.code}</td>
+      <td>${d.type === 'percent' ? '% เปอร์เซ็นต์' : '฿ จำนวนเงิน'}</td>
+      <td>${d.type === 'percent' ? d.value + '%' : '฿' + d.value}</td>
+      <td>${d.uses}</td>
+      <td>${d.limit === 0 ? '∞ ไม่จำกัด' : d.limit}</td>
+      <td>${d.active ? '<span class="badge badge-success">เปิดใช้</span>' : '<span class="badge badge-gray">ปิด</span>'}</td>
+      <td class="td-actions">
+        <button class="btn btn-sm ${d.active?'btn-warning':'btn-success'}" 
+          style="${d.active?'background:var(--warning-light);color:var(--warning);border:1.5px solid var(--warning);':'background:var(--success-light);color:var(--success);border:1.5px solid var(--success);'}"
+          onclick="toggleDiscount('${d.code}')">${d.active?'⏸ ปิด':'▶ เปิด'}</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteDiscount('${d.code}')">🗑️</button>
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="7" style="text-align:center;color:var(--gray-400);padding:24px;">ยังไม่มีโค้ดส่วนลด</td></tr>';
+}
+
+function openDiscountModal() {
+  const body = `
+    <div class="form-group">
+      <label class="form-label">โค้ดส่วนลด <span class="required">*</span></label>
+      <input class="form-input" id="modal-dcode" placeholder="เช่น OPEN10" style="text-transform:uppercase;">
+    </div>
+    <div class="form-group">
+      <label class="form-label">ประเภทส่วนลด <span class="required">*</span></label>
+      <select class="form-select" id="modal-dtype">
+        <option value="percent">% เปอร์เซ็นต์</option>
+        <option value="fixed">฿ จำนวนเงิน</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">มูลค่าส่วนลด <span class="required">*</span></label>
+      <input class="form-input" type="number" id="modal-dval" placeholder="เช่น 10 (%) หรือ 50 (บาท)">
+    </div>
+    <div class="form-group">
+      <label class="form-label">จำกัดจำนวนครั้ง (0 = ไม่จำกัด)</label>
+      <input class="form-input" type="number" id="modal-dlimit" value="0" min="0">
+    </div>
+  `;
+  const footer = `
+    <button class="btn btn-gray" onclick="closeModal()">ยกเลิก</button>
+    <button class="btn btn-primary" onclick="saveDiscount()">💾 สร้างโค้ด</button>
+  `;
+  openModal('สร้างโค้ดส่วนลด', body, footer);
+}
+
+function saveDiscount() {
+  const code = document.getElementById('modal-dcode').value.trim().toUpperCase();
+  const type = document.getElementById('modal-dtype').value;
+  const value = parseInt(document.getElementById('modal-dval').value);
+  const limit = parseInt(document.getElementById('modal-dlimit').value) || 0;
+
+  if (!code || !value) { showToast('❌ กรอกข้อมูลให้ครบ', 'error'); return; }
+
+  const discounts = getDiscounts();
+  if (discounts.find(d => d.code === code)) { showToast('❌ โค้ดนี้มีอยู่แล้ว', 'error'); return; }
+
+  discounts.push({ code, type, value, limit, uses: 0, active: true });
+  setDiscounts(discounts);
+  closeModal();
+  renderAdminDiscounts();
+  showAlert('success', 'สร้างโค้ดสำเร็จ!', `โค้ด <b>${code}</b> พร้อมใช้งานแล้ว`);
+}
+
+function toggleDiscount(code) {
+  const discounts = getDiscounts();
+  const d = discounts.find(x => x.code === code);
+  if (d) d.active = !d.active;
+  setDiscounts(discounts);
+  renderAdminDiscounts();
+  showToast(d.active ? '✅ เปิดใช้โค้ดแล้ว' : '⏸ ปิดโค้ดแล้ว');
+}
+
+function deleteDiscount(code) {
+  showConfirm('ลบโค้ด ' + code + '?', 'โค้ดนี้จะถูกลบออกจากระบบถาวร', function() { _doDeleteDiscount(code); }); }
+function _doDeleteDiscount(code) {
+  setDiscounts(getDiscounts().filter(d => d.code !== code));
+  renderAdminDiscounts();
+  showToast('🗑️ ลบโค้ดแล้ว');
+}
+
+// Passengers
+function renderAdminPassengerFilter() {
+  const trips = getTrips();
+  const sel = document.getElementById('pax-trip-filter');
+  sel.innerHTML = '<option value="">-- ทริปทั้งหมด --</option>' + 
+    trips.map(t => `<option value="${t.id}">${t.name}</option>`).join('');
+  renderPassengers();
+}
+
+function renderPassengers() {
+  const filterTripId = document.getElementById('pax-trip-filter').value;
+  let bookings = getBookings();
+  if (filterTripId) bookings = bookings.filter(b => b.tripId === filterTripId);
+  bookings = [...bookings].reverse();
+
+  document.getElementById('passengers-tbody').innerHTML = bookings.length ? bookings.map(b => `
+    <tr>
+      <td style="font-weight:700;color:var(--primary);">${b.id}</td>
+      <td>${b.fname} ${b.lname}</td>
+      <td>${b.phone}</td>
+      <td>${b.tripName}</td>
+      <td>${b.seats.sort((a,c)=>a-c).join(', ')}</td>
+      <td>฿${b.totalPrice.toLocaleString()}</td>
+      <td>${statusBadge(b.status)}</td>
+      <td class="td-actions">
+        ${b.status!=='confirmed'?`<button class="btn btn-success btn-sm" onclick="confirmBooking('${b.id}')">✅ ยืนยัน</button>`:''}
+        ${b.status!=='cancelled'?`<button class="btn btn-danger btn-sm" onclick="cancelBooking('${b.id}')">❌ ยกเลิก</button>`:''}
+      </td>
+    </tr>
+  `).join('') : '<tr><td colspan="8" style="text-align:center;color:var(--gray-400);padding:24px;">ยังไม่มีผู้โดยสาร</td></tr>';
+}
+
+function confirmBooking(id) {
+  const bookings = getBookings();
+  const b = bookings.find(x => x.id === id);
+  if (b) b.status = 'confirmed';
+  setBookings(bookings);
+  renderPassengers();
+  renderAdminDashboard();
+  showAlert('success', 'ยืนยันสำเร็จ!', `ยืนยันการจอง <b>${id}</b> เรียบร้อยแล้ว`);
+}
+
+function cancelBooking(id) {
+  showConfirm('ยกเลิกการจอง?', 'ยืนยันว่าต้องการยกเลิกการจองนี้ ที่นั่งจะถูกคืนกลับ', function() { _doCancelBooking(id); }); }
+function _doCancelBooking(id) {
+  const bookings = getBookings();
+  const b = bookings.find(x => x.id === id);
+  if (b) {
+    b.status = 'cancelled';
+    // Unbook seats
+    const seatState = getSeatState(b.tripId);
+    b.seats.forEach(n => { if (seatState[n] === 'booked') delete seatState[n]; });
+    setSeatState(b.tripId, seatState);
+  }
+  setBookings(bookings);
+  renderPassengers();
+  renderAdminDashboard();
+  showAlert('error', 'ยกเลิกการจองแล้ว', `การจอง <b>${id}</b> ถูกยกเลิกเรียบร้อย`);
+}
+
+// Settings
+function loadSettings() {
+  const s = getSettings();
+  document.getElementById('settings-sitename').value = s.siteName || '';
+  document.getElementById('settings-form-link').value = s.formLink || '';
+}
+
+function saveSettings() {
+  const siteName = document.getElementById('settings-sitename').value.trim();
+  const formLink = document.getElementById('settings-form-link').value.trim();
+  setSettings({ siteName: siteName || 'TourBus Pro', formLink });
+  document.getElementById('site-name').textContent = siteName || 'TourBus Pro';
+  showAlert('success', 'บันทึกสำเร็จ!', 'ตั้งค่าระบบถูกบันทึกเรียบร้อยแล้ว');
+}
+
+function clearAllData() {
+  showConfirm(
+    '⚠️ ยืนยันล้างข้อมูล?',
+    'จะลบ <b>ทริป, การจอง และโค้ดส่วนลด</b> ทั้งหมด<br>การกระทำนี้ไม่สามารถย้อนกลับได้!',
+    function() {
+      const s = getSettings();
+      localStorage.removeItem('tb_trips');
+      localStorage.removeItem('tb_bookings');
+      localStorage.removeItem('tb_discounts');
+      localStorage.removeItem('tb_seats');
+      setSettings(s);
+      renderAdminDashboard();
+      renderAdminTrips();
+      renderAdminDiscounts();
+      renderAdminPassengerFilter();
+      showAlert('success', 'ล้างข้อมูลแล้ว!', 'พร้อมเริ่มต้นใหม่ครับ 🚌');
+    }
+  );
+}
+
+// ============================================
+// MODAL
+// ============================================
+function openModal(title, body, footer) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-footer').innerHTML = footer;
+  document.getElementById('modal-overlay').style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').style.display = 'none';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+}
+
+// ============================================
+// UTILS
+// ============================================
+function formatDate(d) {
+  if (!d) return '-';
+  const months = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+  const [y, m, day] = d.split('-');
+  return `${parseInt(day)} ${months[parseInt(m)-1]} ${parseInt(y)+543}`;
+}
+
+
+
+// ============================================
+// CONFIRM DIALOG (แทน confirm() ของ browser)
+// ============================================
+function showConfirm(title, msg, onConfirm) {
+  const overlay = document.getElementById('alert-overlay');
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div class="alert-overlay" style="z-index:3000;">
+      <div class="alert-box" onclick="event.stopPropagation()" style="max-width:320px;">
+        <div class="alert-icon-wrap" style="background:#fef3c7;border-color:#d97706;width:80px;height:80px;margin-bottom:16px;">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+            <path d="M20 10 L20 22" stroke="#d97706" stroke-width="3.5" stroke-linecap="round"/>
+            <circle cx="20" cy="29" r="2.5" fill="#d97706"/>
+          </svg>
+        </div>
+        <div class="alert-title" style="font-size:19px;">${title}</div>
+        <div class="alert-msg">${msg}</div>
+        <div style="display:flex;gap:10px;">
+          <button class="alert-btn" style="background:var(--gray-200);color:var(--gray-700);" onclick="closeAlertOk()">ยกเลิก</button>
+          <button class="alert-btn error" onclick="_confirmYes()">ยืนยัน</button>
+        </div>
+      </div>
+    </div>`;
+  window._alertOnOk = onConfirm || null;
+}
+
+function _confirmYes() {
+  document.getElementById('alert-overlay').style.display = 'none';
+  document.getElementById('alert-overlay').innerHTML = '';
+  if (window._alertOnOk) { window._alertOnOk(); window._alertOnOk = null; }
+}
+
+// ============================================
+// ALERT POPUP (ติ๊กถูก / ผิด)
+// ============================================
+function showAlert(type, title, msg, onOk) {
+  const overlay = document.getElementById('alert-overlay');
+
+  let iconSVG = '';
+  if (type === 'success') {
+    iconSVG = `<svg class="alert-icon-svg" viewBox="0 0 52 52" fill="none">
+      <path class="check-path" d="M14 27 L22 35 L38 18" stroke="#16a34a" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`;
+  } else if (type === 'error') {
+    iconSVG = `<svg class="alert-icon-svg" viewBox="0 0 52 52" fill="none">
+      <path class="cross-path" d="M16 16 L36 36" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round"/>
+      <path class="cross-path" d="M36 16 L16 36" stroke="#dc2626" stroke-width="4.5" stroke-linecap="round"/>
+    </svg>`;
+  } else {
+    iconSVG = `<svg class="alert-icon-svg" viewBox="0 0 52 52" fill="none">
+      <path d="M26 16 L26 17" stroke="#0284c7" stroke-width="5" stroke-linecap="round"/>
+      <path class="check-path" d="M26 24 L26 36" stroke="#0284c7" stroke-width="4.5" stroke-linecap="round"/>
+    </svg>`;
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div class="alert-overlay" onclick="closeAlert(event)">
+      <div class="alert-box" onclick="event.stopPropagation()">
+        <div class="alert-icon-wrap ${type}">${iconSVG}</div>
+        <div class="alert-title">${title}</div>
+        <div class="alert-msg">${msg}</div>
+        <button class="alert-btn ${type}" onclick="closeAlertOk()">${type === 'success' ? 'ยอดเยี่ยม!' : type === 'error' ? 'ตกลง' : 'OK'}</button>
+      </div>
+    </div>`;
+  window._alertOnOk = onOk || null;
+}
+
+function closeAlertOk() {
+  document.getElementById('alert-overlay').style.display = 'none';
+  document.getElementById('alert-overlay').innerHTML = '';
+  if (window._alertOnOk) { window._alertOnOk(); window._alertOnOk = null; }
+}
+
+function closeAlert(e) {
+  if (e.target.classList.contains('alert-overlay')) closeAlertOk();
+}
+
+// ============================================
+// HISTORY PAGE
+// ============================================
+function searchHistory() {
+  const query = document.getElementById('history-input').value.trim().toUpperCase();
+  const result = document.getElementById('history-result');
+  if (!query) { result.innerHTML = ''; return; }
+
+  const bookings = getBookings();
+  // ค้นหาจาก Booking ID หรือเบอร์โทร
+  const found = bookings.filter(b =>
+    b.id.toUpperCase().includes(query) ||
+    b.phone.replace(/-/g,'').includes(query.replace(/-/g,''))
+  ).reverse();
+
+  if (found.length === 0) {
+    result.innerHTML = `
+      <div class="empty-state">
+        <div class="emoji">😕</div>
+        <p style="font-weight:700;color:var(--gray-700);">ไม่พบประวัติการจอง</p>
+        <p style="font-size:13px;">ลองกรอกเบอร์โทรหรือ Booking ID ใหม่</p>
+      </div>`;
+    return;
+  }
+
+  result.innerHTML = `<div style="font-size:13px;color:var(--gray-500);margin-bottom:12px;">พบ ${found.length} รายการ</div>` +
+    found.map(b => {
+      const sc = b.status === 'confirmed' ? 'confirmed' : b.status === 'cancelled' ? 'cancelled' : 'pending';
+      const stxt = b.status === 'confirmed' ? '✅ ยืนยันแล้ว' : b.status === 'cancelled' ? '❌ ยกเลิก' : '⏳ รอชำระเงิน';
+      return `
+      <div class="history-card">
+        <div class="history-card-bar ${sc}"></div>
+        <div class="history-card-inner">
+          <div class="history-booking-id">Booking ID: ${b.id}</div>
+          <div class="history-route">${b.tripName}</div>
+          <div class="history-meta">
+            <span>📍 ${b.from} → ${b.to}</span>
+            <span>📅 ${formatDate(b.date)}</span>
+            <span>💺 ที่นั่ง ${b.seats.sort((a,c)=>a-c).join(', ')}</span>
+          </div>
+          <div class="history-footer">
+            <span style="font-family:'Kanit',sans-serif;font-size:17px;font-weight:700;color:var(--primary);">฿${b.totalPrice.toLocaleString()}</span>
+            <span class="badge badge-${sc === 'confirmed' ? 'success' : sc === 'cancelled' ? 'danger' : 'warning'}">${stxt}</span>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+}
+
+// ============================================
+// OVERRIDE showToast → use showAlert for major events
+// ============================================
+const _origShowToast = showToast;
+function showAlert_booking(booking) {
+  showAlert('success', 'จองสำเร็จ! 🎉',
+    `Booking ID ของคุณคือ<br><strong style="font-size:22px;color:var(--primary);letter-spacing:2px;">${booking.id}</strong><br><br>กรุณาบันทึก ID ไว้เพื่อตรวจสอบในภายหลัง`,
+    null
+  );
+}
+
+// ============================================
+// ADMIN SEAT MAP — show passenger name on hover
+// ============================================
+function renderAdminSeatGridV2(tripId) {
+  const seatState = getSeatState(tripId);
+  const bookings = getBookings().filter(b => b.tripId === tripId && b.status !== 'cancelled');
+  
+  // Build seat → passenger map
+  const seatPassenger = {};
+  bookings.forEach(b => {
+    b.seats.forEach(n => {
+      seatPassenger[n] = { name: b.fname + ' ' + b.lname, phone: b.phone, bookingId: b.id, status: b.status };
+    });
+  });
+
+  const grid = document.getElementById('admin-seat-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  for (let row = 1; row <= 10; row++) {
+    const rowEl = document.createElement('div');
+    rowEl.className = 'admin-seat-row';
+    ['A','B','','C','D'].forEach((col, ci) => {
+      if (col === '') {
+        const a = document.createElement('div');
+        a.className = 'seat-aisle';
+        rowEl.appendChild(a);
+        return;
+      }
+      const num = (row-1)*4 + (ci<2?ci+1:ci);
+      const state = seatState[num] || 'available';
+      const pax = seatPassenger[num];
+
+      const wrap = document.createElement('div');
+      wrap.className = 'seat-tooltip-container';
+      wrap.style.display = 'contents';
+
+      const btn = document.createElement('button');
+      btn.className = 'admin-seat-btn';
+      Object.assign(btn.style, {
+        background: state==='booked'?'var(--primary)':state==='locked'?'var(--gray-200)':'var(--success-light)',
+        borderColor: state==='booked'?'var(--primary-dark)':state==='locked'?'var(--gray-400)':'var(--success)',
+        color: state==='booked'?'white':state==='locked'?'var(--gray-500)':'var(--success)',
+        cursor: state==='booked'?'default':'pointer',
+        position: 'relative'
+      });
+      btn.textContent = num;
+
+      if (pax) {
+        // show tooltip on hover
+        const tip = document.createElement('div');
+        tip.className = 'seat-map-tooltip';
+        tip.innerHTML = `<b>${pax.name}</b><br>📞 ${pax.phone}<br>${pax.bookingId}`;
+        btn.appendChild(tip);
+        btn.title = pax.name;
+        // click to see passenger detail
+        btn.onclick = () => showAlert('info', `ที่นั่ง ${num}`,
+          `<b>${pax.name}</b><br>📞 ${pax.phone}<br>🎫 ${pax.bookingId}<br><span class="badge badge-${pax.status==='confirmed'?'success':'warning'}" style="margin-top:6px;display:inline-flex;">${pax.status==='confirmed'?'✅ ยืนยัน':'⏳ รอชำระ'}</span>`
+        );
+      } else if (state !== 'booked') {
+        btn.onclick = () => toggleAdminSeat(tripId, num);
+      }
+
+      btn.appendChild && pax ? null : null;
+      rowEl.appendChild(btn);
+    });
+    grid.appendChild(rowEl);
+  }
+
+  // Stats
+  const booked = Object.values(seatState).filter(s=>s==='booked').length;
+  const locked = Object.values(seatState).filter(s=>s==='locked').length;
+  const avail = 40 - booked - locked;
+  const statsEl = document.getElementById('admin-seat-stats');
+  if (statsEl) statsEl.innerHTML = `
+    <div class="summary-row"><span>ว่าง</span><span class="val" style="color:var(--success);">${avail}</span></div>
+    <div class="summary-row"><span>จองแล้ว</span><span class="val" style="color:var(--primary);">${booked}</span></div>
+    <div class="summary-row"><span>ล็อค</span><span class="val" style="color:var(--gray-500);">${locked}</span></div>
+    <div class="summary-row"><span>ทั้งหมด</span><span class="val">40</span></div>
+  `;
+}
+
+// ============================================
+// INIT
+// ============================================
+window.addEventListener('DOMContentLoaded', () => {
+  seedDemoData();
+  populateProvinces();
+  const s = getSettings();
+  document.getElementById('site-name').textContent = s.siteName || 'TourBus Pro';
+  renderTrips();
+});
+</script>
+
+</body>
+</html>
