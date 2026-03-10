@@ -5,8 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>TourBus Pro — ระบบจองรถทัวร์</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700;800&family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<!-- ใช้ system fonts แทน Google Fonts -->
 <style>
 /* =========================================
    ROOT VARIABLES
@@ -48,7 +47,7 @@ RESET & BASE
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; font-size: 16px; }
 body {
-font-family: ‘Sarabun’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 background: var(–gray-50);
 color: var(–gray-800);
 min-height: 100vh;
@@ -81,7 +80,7 @@ gap: 12px;
 }
 
 .nav-logo {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 18px; font-weight: 800;
 color: var(–primary);
 display: flex; align-items: center; gap: 8px;
@@ -155,7 +154,7 @@ background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(255,255,255,0.06) 
 }
 
 .hero h1 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: clamp(24px, 5vw, 40px);
 font-weight: 800; color: white;
 position: relative; margin-bottom: 8px;
@@ -177,7 +176,7 @@ flex: 1; min-width: 140px;
 padding: 12px 16px;
 border-radius: var(–radius-sm);
 border: none;
-font-size: 14px; font-family: ‘Sarabun’, sans-serif;
+font-size: 14px; font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 background: white;
 color: var(–gray-800);
 }
@@ -187,7 +186,7 @@ background: var(–accent);
 color: white; padding: 12px 24px;
 border-radius: var(–radius-sm);
 font-size: 14px; font-weight: 700;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 transition: all 0.2s;
 white-space: nowrap;
 }
@@ -203,7 +202,7 @@ margin-bottom: 16px;
 }
 
 .section-title {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 20px; font-weight: 700; color: var(–gray-800);
 }
 
@@ -242,7 +241,7 @@ margin-bottom: 12px; gap: 12px;
 }
 
 .trip-name {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 17px; font-weight: 700; color: var(–gray-900);
 line-height: 1.3;
 }
@@ -251,7 +250,7 @@ line-height: 1.3;
 background: linear-gradient(135deg, var(–primary), var(–primary-mid));
 color: white;
 padding: 6px 14px; border-radius: 20px;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 15px; font-weight: 700;
 white-space: nowrap; flex-shrink: 0;
 }
@@ -303,7 +302,7 @@ display: flex; gap: 8px;
 display: inline-flex; align-items: center; justify-content: center; gap: 6px;
 padding: 11px 18px; border-radius: var(–radius-sm);
 font-size: 14px; font-weight: 700;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 transition: all 0.2s;
 border: none; cursor: pointer;
 }
@@ -370,13 +369,13 @@ display: inline-flex; align-items: center; gap: 6px;
 color: rgba(255,255,255,0.8); font-size: 14px;
 margin-bottom: 12px; cursor: pointer;
 background: none; border: none; padding: 0;
-font-family: ‘Sarabun’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 }
 
 .page-header-back:hover { color: white; }
 
 .page-header h2 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 22px; font-weight: 700;
 margin-bottom: 4px;
 }
@@ -400,7 +399,7 @@ box-shadow: var(–shadow);
 }
 
 .bus-diagram h3 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 16px; font-weight: 700; color: var(–gray-800);
 margin-bottom: 16px; text-align: center;
 }
@@ -468,7 +467,7 @@ border: 2px solid transparent;
 display: flex; align-items: center; justify-content: center;
 transition: all 0.15s;
 cursor: pointer;
-font-family: ‘Sarabun’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 min-width: 0;
 }
 
@@ -520,7 +519,7 @@ margin-bottom: 12px;
 }
 
 .summary-card h3 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 15px; font-weight: 700; color: var(–gray-800);
 margin-bottom: 14px;
 padding-bottom: 10px;
@@ -543,7 +542,7 @@ font-weight: 700; color: var(–gray-800);
 .summary-total {
 display: flex; justify-content: space-between; align-items: center;
 padding: 12px 0 4px;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 17px; font-weight: 700; color: var(–gray-900);
 border-top: 2px solid var(–gray-200);
 margin-top: 8px;
@@ -587,7 +586,7 @@ color: var(–primary);
 padding: 9px 14px;
 border-radius: var(–radius-sm);
 font-size: 13px; font-weight: 700;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 white-space: nowrap;
 transition: all 0.2s;
 }
@@ -626,7 +625,7 @@ margin-bottom: 16px;
 }
 
 .form-card h3 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 16px; font-weight: 700; color: var(–gray-800);
 margin-bottom: 18px;
 display: flex; align-items: center; gap: 8px;
@@ -680,7 +679,7 @@ font-size: 14px;
 
 .booking-info-row .label { color: var(–gray-600); }
 .booking-info-row .val { font-weight: 700; color: var(–gray-800); }
-.booking-info-row.total .val { color: var(–primary); font-size: 18px; font-family: ‘Kanit’, sans-serif; }
+.booking-info-row.total .val { color: var(–primary); font-size: 18px; font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800; }
 
 .google-form-note {
 background: var(–warning-light);
@@ -722,7 +721,7 @@ border-radius: 50% 50% 0 0 / 20px 20px 0 0;
 }
 
 .ticket-logo {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 16px; font-weight: 800; color: white;
 margin-bottom: 16px;
 display: flex; align-items: center; gap: 8px;
@@ -733,7 +732,7 @@ display: flex; align-items: center; gap: 10px;
 color: white;
 }
 
-.ticket-city { font-family: ‘Kanit’, sans-serif; font-size: 22px; font-weight: 800; }
+.ticket-city { font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800; font-size: 22px; font-weight: 800; }
 .ticket-city-sub { font-size: 12px; opacity: 0.75; }
 
 .ticket-arrow { font-size: 20px; opacity: 0.7; }
@@ -750,7 +749,7 @@ color: var(–gray-400); margin-bottom: 4px;
 }
 
 .ticket-id-val {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 28px; font-weight: 800; color: var(–primary);
 letter-spacing: 3px;
 }
@@ -849,7 +848,7 @@ margin-bottom: 20px;
 }
 
 .check-box h2 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 22px; font-weight: 700; color: var(–gray-800);
 margin-bottom: 6px;
 }
@@ -891,13 +890,13 @@ box-shadow: var(–shadow-lg);
 }
 
 .pin-card .logo {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 22px; font-weight: 800; color: var(–primary);
 margin-bottom: 8px;
 }
 
 .pin-card h2 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 20px; font-weight: 700; color: var(–gray-800);
 margin-bottom: 6px;
 }
@@ -926,7 +925,7 @@ aspect-ratio: 1;
 background: var(–gray-50);
 border: 2px solid var(–gray-200);
 border-radius: 12px;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 20px; font-weight: 700; color: var(–gray-800);
 transition: all 0.15s;
 }
@@ -955,7 +954,7 @@ overflow-y: auto;
 }
 
 .admin-sidebar-title {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 11px; font-weight: 700; color: var(–gray-500);
 text-transform: uppercase; letter-spacing: 1.5px;
 padding: 4px 12px; margin-bottom: 8px; margin-top: 16px;
@@ -969,7 +968,7 @@ padding: 10px 12px; border-radius: var(–radius-sm);
 color: var(–gray-400); font-size: 14px; font-weight: 500;
 cursor: pointer; transition: all 0.2s;
 width: 100%; background: none;
-font-family: ‘Sarabun’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 }
 
 .admin-nav-item:hover { background: rgba(255,255,255,0.06); color: white; }
@@ -990,7 +989,7 @@ overflow-y: auto;
 .admin-section.active { display: block; }
 
 .admin-section-title {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 22px; font-weight: 700; color: var(–gray-900);
 margin-bottom: 20px;
 }
@@ -1008,7 +1007,7 @@ padding: 18px; box-shadow: var(–shadow);
 }
 
 .stat-card .stat-val {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 28px; font-weight: 800; color: var(–gray-900);
 margin-bottom: 2px;
 }
@@ -1031,7 +1030,7 @@ border-bottom: 1px solid var(–gray-200);
 }
 
 .admin-table-header h3 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 16px; font-weight: 700; color: var(–gray-800);
 }
 
@@ -1060,7 +1059,7 @@ color: var(–gray-700); vertical-align: middle;
 .btn-sm {
 padding: 5px 10px; border-radius: 6px;
 font-size: 12px; font-weight: 700;
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 }
 
 /* Admin form modal */
@@ -1086,7 +1085,7 @@ display: flex; justify-content: space-between; align-items: center;
 }
 
 .modal-header h3 {
-font-family: ‘Kanit’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif; font-weight: 800;
 font-size: 18px; font-weight: 700; color: var(–gray-800);
 }
 
@@ -1125,7 +1124,7 @@ font-size: 10px; font-weight: 700;
 border: 2px solid transparent;
 display: flex; align-items: center; justify-content: center;
 cursor: pointer; transition: all 0.15s;
-font-family: ‘Sarabun’, sans-serif;
+font-family: -apple-system, ‘Helvetica Neue’, Arial, sans-serif;
 }
 
 /* Status badges */
@@ -1227,9 +1226,9 @@ margin: 0 auto 20px;
 @keyframes drawCheck { to { stroke-dashoffset: 0; } }
 .cross-path { stroke-dasharray: 40; stroke-dashoffset: 40; animation: drawCross 0.3s ease 0.1s forwards; }
 @keyframes drawCross { to { stroke-dashoffset: 0; } }
-.alert-title { font-family: “Kanit”, sans-serif; font-size: 22px; font-weight: 800; color: var(–gray-800); margin-bottom: 8px; }
+.alert-title { font-family: -apple-system, “Helvetica Neue”, Arial, sans-serif; font-weight: 800; font-size: 22px; font-weight: 800; color: var(–gray-800); margin-bottom: 8px; }
 .alert-msg { font-size: 15px; color: var(–gray-500); line-height: 1.6; margin-bottom: 24px; }
-.alert-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: “Kanit”, sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
+.alert-btn { width: 100%; padding: 14px; border-radius: 14px; border: none; font-family: -apple-system, “Helvetica Neue”, Arial, sans-serif; font-weight: 800; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; }
 .alert-btn.success { background: var(–success); color: white; }
 .alert-btn.success:hover { background: #15803d; }
 .alert-btn.error { background: var(–danger); color: white; }
@@ -1244,7 +1243,7 @@ background: white; border-radius: var(–radius);
 border: 1.5px solid var(–gray-200); padding: 22px;
 box-shadow: var(–shadow); margin-bottom: 20px;
 }
-.history-search-box h2 { font-family: “Kanit”, sans-serif; font-size: 20px; font-weight: 700; color: var(–gray-800); margin-bottom: 4px; }
+.history-search-box h2 { font-family: -apple-system, “Helvetica Neue”, Arial, sans-serif; font-weight: 800; font-size: 20px; font-weight: 700; color: var(–gray-800); margin-bottom: 4px; }
 .history-search-box p { font-size: 13px; color: var(–gray-500); margin-bottom: 16px; }
 .history-card {
 background: white; border-radius: var(–radius);
@@ -1259,7 +1258,7 @@ position: relative; overflow: hidden;
 .history-card-bar.cancelled { background: var(–danger); }
 .history-card-inner { padding-left: 14px; }
 .history-booking-id { font-size: 11px; color: var(–gray-400); font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
-.history-route { font-family: “Kanit”, sans-serif; font-size: 17px; font-weight: 700; color: var(–gray-900); margin-bottom: 8px; }
+.history-route { font-family: -apple-system, “Helvetica Neue”, Arial, sans-serif; font-weight: 800; font-size: 17px; font-weight: 700; color: var(–gray-900); margin-bottom: 8px; }
 .history-meta { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(–gray-600); margin-bottom: 10px; }
 .history-footer { display: flex; justify-content: space-between; align-items: center; }
 
